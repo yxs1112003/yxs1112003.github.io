@@ -175,7 +175,7 @@
       
         <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>在ambari集群上bigdata-client节点做hiveserver2自动拉起测试，增加了一个hiveserver2，然后再ambari删除该hiveserver2</p>
 <p>然后出现请求被提交到已经删除的hiveserver2节点</p>
-<p>![image-20200614162414339](/Users/yxs1112003/Library/Application Support/typora-user-images/image-20200614162414339.png)</p>
+<p><img src="/images/image-20200614163951660.png" alt="image-20200614163951660"></p>
 <p>在zookeeper节点上执行zookeeper-cli.sh进入zookeeper命令行</p>
 <p>执行删除无效的节点命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete /hiveserver2/serverUri=bigdata-client:10000;version=1.2.1000.2.6.5.1175-1;sequence=0000000010</span><br></pre></td></tr></table></figure>
