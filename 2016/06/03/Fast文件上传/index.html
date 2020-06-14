@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Fast文件上传 | On The Road</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="FastDFS系统安装FastDFS5.081http:&#x2F;&#x2F;www.cnblogs.com&#x2F;Yin-BloodMage&#x2F;p&#x2F;5480608.html FastDFS系统JavaClient客户端单元测试的例子JavaClient用法单元测试程序，里面最重要的一点是可以new一个新的StorageClient实例，该实例可以直接调用上传下载文件方法。网上那些写了一堆的来创建StoreageClien">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fast文件上传">
+<meta property="og:url" content="http://yxs1112003.github.io/2016/06/03/Fast%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="On The Road">
+<meta property="og:description" content="FastDFS系统安装FastDFS5.081http:&#x2F;&#x2F;www.cnblogs.com&#x2F;Yin-BloodMage&#x2F;p&#x2F;5480608.html FastDFS系统JavaClient客户端单元测试的例子JavaClient用法单元测试程序，里面最重要的一点是可以new一个新的StorageClient实例，该实例可以直接调用上传下载文件方法。网上那些写了一堆的来创建StoreageClien">
+<meta property="article:published_time" content="2016-06-03T02:40:30.000Z">
+<meta property="article:modified_time" content="2020-06-14T07:24:28.000Z">
+<meta property="article:author" content="yxs1112003">
+<meta property="article:tag" content="summary">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="On The Road" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">On The Road</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yxs1112003.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Fast文件上传" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/03/Fast%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="article-date">
+  <time datetime="2016-06-03T02:40:30.000Z" itemprop="datePublished">2016-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Fast文件上传
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="FastDFS系统"><a href="#FastDFS系统" class="headerlink" title="FastDFS系统"></a>FastDFS系统</h1><h2 id="安装FastDFS5-08"><a href="#安装FastDFS5-08" class="headerlink" title="安装FastDFS5.08"></a>安装FastDFS5.08</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.cnblogs.com/Yin-BloodMage/p/5480608.html</span><br></pre></td></tr></table></figure>
+<h2 id="FastDFS系统JavaClient客户端"><a href="#FastDFS系统JavaClient客户端" class="headerlink" title="FastDFS系统JavaClient客户端"></a>FastDFS系统JavaClient客户端</h2><h3 id="单元测试的例子"><a href="#单元测试的例子" class="headerlink" title="单元测试的例子"></a>单元测试的例子</h3><p>JavaClient用法单元测试程序，里面最重要的一点是可以new一个新的StorageClient实例，该实例可以直接调用上传下载文件方法。<br>网上那些写了一堆的来创建StoreageClient实例的做法不能说是错的，但在多线程环境下有时候会出些莫名其妙的问题，而且很丑陋。这里只列举上传方法，其他删除下载和上传类似。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Meta</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String groupName;</span><br><span class="line">    <span class="keyword">private</span> String upPath;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Meta</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Meta</span><span class="params">(String groupName, String upPath)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.groupName = groupName;</span><br><span class="line">        <span class="keyword">this</span>.upPath = upPath;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// getter setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单元测试</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FDFSTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> FDFSServiceImpl fdfsService = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> Recorder recorder = Recorder.getInstance();</span><br><span class="line">    <span class="keyword">private</span> Logger logger = Logger.getLogger(FDFSTest<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="keyword">private</span> Meta meta = <span class="keyword">new</span> Meta(<span class="string">"group1"</span>, <span class="string">"M00/01/B4/rBsMQFdQES2ACE0yAABFapaYBmE511.png"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> <span class="keyword">throws</span> IOException, MyException </span>&#123;</span><br><span class="line">        ConfigManager configManager = ConfigManager.getInstance();</span><br><span class="line">        fdfsService = <span class="keyword">new</span> FDFSServiceImpl();</span><br><span class="line">        ClientGlobal.init(configManager.getConf_filename());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 上传测试开始</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpload</span><span class="params">()</span> <span class="keyword">throws</span> IOException, MyException </span>&#123;</span><br><span class="line">        String localPath = <span class="string">"conf/test.png"</span>;</span><br><span class="line">        NameValuePair[] nvp = <span class="keyword">new</span> NameValuePair[] &#123; <span class="keyword">new</span> NameValuePair(<span class="string">"name"</span>, <span class="string">"test.png"</span>),</span><br><span class="line">                <span class="keyword">new</span> NameValuePair(<span class="string">"size"</span>, <span class="string">"18K"</span>) &#125;;</span><br><span class="line">        String[] fileIds = <span class="keyword">new</span> String[<span class="number">0</span>];</span><br><span class="line">        StorageClient client;</span><br><span class="line">        Meta aMeta;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            client = <span class="keyword">new</span> StorageClient();</span><br><span class="line">            fileIds = client.upload_file(localPath, <span class="keyword">null</span>, nvp);</span><br><span class="line">            aMeta = <span class="keyword">new</span> Meta(fileIds[<span class="number">0</span>], fileIds[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将上传的文件路径记录到文件</span></span><br><span class="line">            <span class="comment">//recorder.recordUploadedFileList(aMeta);</span></span><br><span class="line">            logger.info(aMeta);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="keyword">null</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        Assert.assertNotEquals(<span class="string">"fileIds shouldn't be 0"</span>, <span class="number">0</span>, fileIds.length);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="并发上传"><a href="#并发上传" class="headerlink" title="并发上传"></a>并发上传</h3><p>使用的是fixedThreadPool来实现3000并发上传单张图片，并发代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadThreadTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        startToUpload();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startToUpload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ConfigManager configManager = ConfigManager.getInstance();</span><br><span class="line">        <span class="comment">//线程池固定大小为16，不能使用newCachedPool会有问题        </span></span><br><span class="line">        ExecutorService exec = Executors.newFixedThreadPool(<span class="number">16</span>);</span><br><span class="line">        UploadThread command = <span class="keyword">new</span> UploadThread();</span><br><span class="line">        <span class="comment">//getMaxConcurrentNum是获取最大并发数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; configManager.getMaxConcurrentNum(); i++) &#123;</span><br><span class="line">            exec.execute(command);</span><br><span class="line">        &#125;</span><br><span class="line">        exec.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> FDFSServiceImpl fdfsService;</span><br><span class="line">    <span class="keyword">private</span> NameValuePair[] nvp = <span class="keyword">new</span> NameValuePair[] &#123; <span class="keyword">new</span> NameValuePair(<span class="string">"name"</span>, <span class="string">"test.png"</span>),</span><br><span class="line">            <span class="keyword">new</span> NameValuePair(<span class="string">"size"</span>, <span class="string">"18K"</span>) &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UploadThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        fdfsService = <span class="keyword">new</span> FDFSServiceImpl();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        fdfsService.upload(nvp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> nvp       上传文件的属性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> localPath 本地文件路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 上传后文件数据元</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Meta <span class="title">upload</span><span class="params">(NameValuePair[] nvp, String localPath)</span> </span>&#123;</span><br><span class="line">    String[] fileIds;</span><br><span class="line">    Meta meta = <span class="keyword">null</span>;</span><br><span class="line">    StorageClient client;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">        client = getStorageClient();</span><br><span class="line">        fileIds = client.upload_file(localPath, <span class="keyword">null</span>, nvp);</span><br><span class="line">        meta = <span class="keyword">new</span> Meta(fileIds[<span class="number">0</span>], fileIds[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将上传的文件路径记录到文件</span></span><br><span class="line">        recorder.recordUploadedFileList(meta);</span><br><span class="line">        logger.info(meta);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        logger.error(<span class="keyword">null</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> meta;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="断点续上传"><a href="#断点续上传" class="headerlink" title="断点续上传"></a>断点续上传</h3><p>大文件的上传,需要使用append_file方法，上传时候需要分片，注意最后一片是小于你的预定义buff长度的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tryAppend</span><span class="params">(Meta meta)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"try to append file: "</span> + appendFilePath);</span><br><span class="line">        <span class="comment">// 本地文件长度</span></span><br><span class="line">        <span class="keyword">long</span> length = <span class="keyword">new</span> File(appendFilePath).length();</span><br><span class="line">        <span class="keyword">long</span> skipSize = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        FileInfo fileInfo = readFileInfo(meta);</span><br><span class="line">        <span class="keyword">long</span> uploadedSize;</span><br><span class="line">        <span class="comment">// 上传了文件的大小</span></span><br><span class="line">        GetUploadedFileSize getUploadedFileSize = <span class="keyword">new</span> GetUploadedFileSize(fileInfo).invoke();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断是否已经上传，若已经append完毕,return</span></span><br><span class="line">        <span class="keyword">if</span> (getUploadedFileSize.hasUploaded())</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 未上传完毕,则获取已经上传了的大小</span></span><br><span class="line">        uploadedSize = getUploadedFileSize.getUploadedSize();</span><br><span class="line">        <span class="keyword">if</span> (CheckIfHasFinishedUpload(length, skipSize, uploadedSize))</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//执行上传</span></span><br><span class="line">        doTryAppend(meta, appendFilePath, length);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">CheckIfHasFinishedUpload</span><span class="params">(<span class="keyword">long</span> length, <span class="keyword">long</span> skipSize, <span class="keyword">long</span> uploadedSize)</span> </span>&#123;</span><br><span class="line">    logger.warn(<span class="string">"remote file length "</span> + uploadedSize + <span class="string">"local file name "</span> + appendFilePath</span><br><span class="line">            + <span class="string">" ------ local file length "</span> + length);</span><br><span class="line">    <span class="keyword">if</span> (uploadedSize == length) &#123;</span><br><span class="line">        logger.info(<span class="string">"---&gt; This file have been uploaded successfully,remote file size hasUploaded: "</span> + skipSize);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (uploadedSize &gt; length) &#123;</span><br><span class="line">        logger.error(<span class="string">"uploaded error!remote file bigger than local file !!"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> meta</span></span><br><span class="line"><span class="comment"> *            数据元</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> appendFilePath</span></span><br><span class="line"><span class="comment"> *            本地文件路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> totalFileSize</span></span><br><span class="line"><span class="comment"> *            要上传的文件的大小</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doTryAppend</span><span class="params">(Meta meta, String appendFilePath, <span class="keyword">long</span> totalFileSize)</span> </span>&#123;</span><br><span class="line">    logger.info(<span class="string">"appendFilePath: "</span> + appendFilePath);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> (InputStream is = <span class="keyword">new</span> FileInputStream(appendFilePath)) &#123;</span><br><span class="line">        append(meta, totalFileSize, is);</span><br><span class="line">        recorder.recordUploadedFileList(meta);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        logger.error(<span class="keyword">null</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    logger.info(<span class="string">"文件上传完成"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> meta</span></span><br><span class="line"><span class="comment"> *            数据元</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> totalFileSize</span></span><br><span class="line"><span class="comment"> *            文件总大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> is</span></span><br><span class="line"><span class="comment"> *            上传使用的输入流</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(Meta meta, <span class="keyword">long</span> totalFileSize, InputStream is)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 已经上传的大小</span></span><br><span class="line">    <span class="keyword">long</span> haveUploadedFileSize = <span class="number">0L</span>;</span><br><span class="line">    <span class="comment">// 获取已经上传的大小</span></span><br><span class="line">    haveUploadedFileSize = getHaveUploadedFileSize(meta, haveUploadedFileSize);</span><br><span class="line">    skipHaveUploadSize(haveUploadedFileSize, is);</span><br><span class="line">    printUploadInfo(totalFileSize, haveUploadedFileSize);</span><br><span class="line">    appendBrokenUpload(meta, totalFileSize, is, haveUploadedFileSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自己起的名字，表示从这里开始执行分片上传</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">appendBrokenUpload</span><span class="params">(Meta meta, <span class="keyword">long</span> totalFileSize, InputStream is, <span class="keyword">long</span> haveUploadedFileSize)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 上传时分割</span></span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[section_size];</span><br><span class="line">    <span class="keyword">while</span> (haveUploadedFileSize &lt; totalFileSize) &#123;</span><br><span class="line">        <span class="comment">// 每次读多少，最后一次文件长度为文件剩余长度而不是buff长度</span></span><br><span class="line">        <span class="keyword">int</span> readCount = getReadCount(totalFileSize, haveUploadedFileSize, buff, is);</span><br><span class="line">        <span class="comment">// 3次尝试上传都失败则不上传该文件，并记录已上传的大小，下次上传可以skip已上传大小后，再上传</span></span><br><span class="line">        uploadByFragment(meta, buff, readCount);</span><br><span class="line">        haveUploadedFileSize += readCount;</span><br><span class="line">        printUploadInfo(totalFileSize, haveUploadedFileSize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">printUploadInfo</span><span class="params">(<span class="keyword">long</span> totalFileSize, <span class="keyword">long</span> haveUploadedFileSize)</span> </span>&#123;</span><br><span class="line">    logger.info(<span class="string">"upload progress : "</span> + haveUploadedFileSize + <span class="string">"/"</span> + totalFileSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分片上传</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分片上传</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> meta</span></span><br><span class="line"><span class="comment"> *            数据元</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> buff</span></span><br><span class="line"><span class="comment"> *            分片大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> readCount</span></span><br><span class="line"><span class="comment"> *            每次上传的大小</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">uploadByFragment</span><span class="params">(Meta meta, <span class="keyword">byte</span>[] buff, <span class="keyword">int</span> readCount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (count &lt; <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> uploadedSize = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (checkIfLastFragment(buff, readCount)) &#123;</span><br><span class="line">                uploadedSize = uploadLastFragment(meta, buff, readCount);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                uploadedSize = storageClient.append_file(meta.getGroupName(), meta.getUpPath(), buff);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="keyword">null</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        count++;</span><br><span class="line">        <span class="comment">//上传结果result为零，说明本次上传失败或者是整个文件上传完毕，跳出</span></span><br><span class="line">        <span class="keyword">if</span> (uploadedSize == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上传最后一片内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> meta</span></span><br><span class="line"><span class="comment"> *            数据元</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> buff</span></span><br><span class="line"><span class="comment"> *            分片的载体</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> readCount</span></span><br><span class="line"><span class="comment"> *            实际上传了多少个字节</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 返回上传的实际大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> MyException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">uploadLastFragment</span><span class="params">(Meta meta, <span class="keyword">byte</span>[] buff, <span class="keyword">int</span> readCount)</span> <span class="keyword">throws</span> IOException, MyException </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> uploadedSize;</span><br><span class="line">    <span class="keyword">byte</span>[] newBuffer = <span class="keyword">new</span> <span class="keyword">byte</span>[readCount];</span><br><span class="line">    System.arraycopy(buff, <span class="number">0</span>, newBuffer, <span class="number">0</span>, readCount);</span><br><span class="line">    uploadedSize = storageClient.append_file(meta.getGroupName(), meta.getUpPath(), newBuffer);</span><br><span class="line">    <span class="keyword">return</span> uploadedSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>断点续上传，是先获取已上传文件大小，然后用InputStream类的skip方法把已经上传的大小skip过去，来达到断点上传的效果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">skipHaveUploadSize</span><span class="params">(<span class="keyword">long</span> skipSize, InputStream is)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// noinspection ResultOfMethodCallIgnored</span></span><br><span class="line">    is.skip(skipSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">getHaveUploadedFileSize</span><span class="params">(Meta meta, <span class="keyword">long</span> skipSize)</span> </span>&#123;</span><br><span class="line">    FileInfo fileInfo = readFileInfo(meta);</span><br><span class="line">    <span class="keyword">if</span> (fileInfo != <span class="keyword">null</span>) &#123;</span><br><span class="line">        skipSize = fileInfo.getFileSize();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> skipSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="大文件分片下载"><a href="#大文件分片下载" class="headerlink" title="大文件分片下载"></a>大文件分片下载</h3><p>还有就是大文件下载，当文件比较大的时候（大于500M）,会报OutOfMemoryError，解决方法是对大文件分片下载</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分片下载防止内存溢出(OutOfMemoryError)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> meta     数据元</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pathName 本地文件路径</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">downloadByFragment</span><span class="params">(Meta meta, String pathName)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> remoteLength = readFileInfo(meta).getFileSize();</span><br><span class="line">    <span class="keyword">long</span> hasDownSize = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">byte</span>[] buff;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">long</span> fragmentSize = SECTION_SIZE;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="comment">// 检测是否为最后一片，是就只下载剩余的文件长度，而不是整个SECTION_SIZE的大小</span></span><br><span class="line">            <span class="keyword">if</span> (checkIfLastFragment(remoteLength, hasDownSize)) &#123;</span><br><span class="line">                fragmentSize = getLeftFragmentSize(remoteLength, hasDownSize);</span><br><span class="line">            &#125;</span><br><span class="line">            buff = getStorageClient().download_file(meta.getGroupName(), meta.getUpPath(), hasDownSize,</span><br><span class="line">                    fragmentSize);</span><br><span class="line">            printDownloadInfo(remoteLength, hasDownSize);</span><br><span class="line">            <span class="keyword">if</span> (buff == <span class="keyword">null</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"download finished"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            fos = writeToDisk(pathName, buff);</span><br><span class="line">            hasDownSize += SECTION_SIZE;</span><br><span class="line">        &#125; <span class="keyword">while</span> (<span class="keyword">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (MyException | IOException e) &#123;</span><br><span class="line">        logger.error(<span class="keyword">null</span>, e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        closeResource(fos);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>检测是否下载最后一片</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">checkIfLastFragment</span><span class="params">(<span class="keyword">long</span> remoteLength, <span class="keyword">long</span> offset)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> offset + SECTION_SIZE &gt; remoteLength;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yxs1112003.github.io/2016/06/03/Fast%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" data-id="ckbeqwcsq0000knw7eco034yz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/summary/" rel="tag">summary</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/06/13/%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E9%A2%84%E9%98%B2%E7%AD%96%E7%95%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          网站安全漏洞预防
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summary/" rel="tag">summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/summary/" style="font-size: 10px;">summary</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/14/%E7%BA%BF%E7%A8%8B%E8%AE%A1%E6%95%B0%E5%99%A8_%E6%A0%85%E6%A0%8F_%E4%BF%A1%E5%8F%B7%E9%87%8F/">多线程控制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/29/HDFS%E5%AE%89%E8%A3%85/">Hadoop集群安装</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/24/fastdfs5.05%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85/">FastDFS集群安装</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/15/url%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/">url中文编码问题</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/13/maxscale%E5%AF%BC%E8%87%B4%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/">maxscale导致主从数据库不同步问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yxs1112003<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
