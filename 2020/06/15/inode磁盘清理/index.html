@@ -7,14 +7,14 @@
   
   <title>inode磁盘清理 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题描述硬盘有剩余空间但一直提示no device space left，使用df -hl查看磁盘还有空间 解决方案使用df -i查看inode，发现占用率100%，说明碎片文件过多超过linux的文件数量的限制，使用如下命令查找碎片文件文件，并清理 1find &#x2F; -xdev -printf &#39;%h\n&#39; | sort | uniq -c | sort -k 1 -n">
+  <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="inode磁盘清理">
 <meta property="og:url" content="http://yxs1112003.github.io/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="问题描述硬盘有剩余空间但一直提示no device space left，使用df -hl查看磁盘还有空间 解决方案使用df -i查看inode，发现占用率100%，说明碎片文件过多超过linux的文件数量的限制，使用如下命令查找碎片文件文件，并清理 1find &#x2F; -xdev -printf &#39;%h\n&#39; | sort | uniq -c | sort -k 1 -n">
+<meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2020-06-15T06:44:51.000Z">
-<meta property="article:modified_time" content="2020-06-14T08:28:50.000Z">
+<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
@@ -88,7 +88,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>硬盘有剩余空间但一直提示no device space left，使用df -hl查看磁盘还有空间</p>
+        <p>文章内容</p>
+<a id="more"></a>
+
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>硬盘有剩余空间但一直提示no device space left，使用df -hl查看磁盘还有空间</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>使用df -i查看inode，发现占用率100%，说明碎片文件过多超过linux的文件数量的限制，使用如下命令查找碎片文件文件，并清理</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -xdev -printf '%h\n' | sort | uniq -c | sort -k 1 -n</span><br></pre></td></tr></table></figure>
 
@@ -96,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/" data-id="ckbevickj000m39w74hj5cuqn" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/" data-id="ckbf2r6a2000u0qw78zdtgobe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>

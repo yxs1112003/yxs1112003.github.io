@@ -7,14 +7,14 @@
   
   <title>网站安全漏洞预防 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="sql注入攻击MyBatis 避免了几乎所有的sql注入。mybatis在配置SQL语句的时候，有两种描述参数的方式。#{}和${}，尽量不要使用${}。使用“#”时，mybatis会使用预编译来处理参数，这样可以避免SQL注入。如果一定要使用$，则需要自己过滤用户输入。详细参见http:&#x2F;&#x2F;www.evil0x.com&#x2F;posts&#x2F;19367.html 123&lt;select id&#x3D;&quot;sel">
+  <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网站安全漏洞预防">
 <meta property="og:url" content="http://yxs1112003.github.io/2016/06/13/%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E9%A2%84%E9%98%B2%E7%AD%96%E7%95%A5/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="sql注入攻击MyBatis 避免了几乎所有的sql注入。mybatis在配置SQL语句的时候，有两种描述参数的方式。#{}和${}，尽量不要使用${}。使用“#”时，mybatis会使用预编译来处理参数，这样可以避免SQL注入。如果一定要使用$，则需要自己过滤用户输入。详细参见http:&#x2F;&#x2F;www.evil0x.com&#x2F;posts&#x2F;19367.html 123&lt;select id&#x3D;&quot;sel">
+<meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2016-06-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-14T07:18:27.000Z">
+<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="安全">
 <meta name="twitter:card" content="summary">
@@ -88,7 +88,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="sql注入攻击"><a href="#sql注入攻击" class="headerlink" title="sql注入攻击"></a>sql注入攻击</h1><p>MyBatis 避免了几乎所有的sql注入。mybatis在配置SQL语句的时候，有两种描述参数的方式。#{}和${}，尽量不要使用${}。使用“#”时，mybatis会使用预编译来处理参数，这样可以避免SQL注入。如果一定要使用$，则需要自己过滤用户输入。详细参见<a href="http://www.evil0x.com/posts/19367.html" target="_blank" rel="noopener">http://www.evil0x.com/posts/19367.html</a></p>
+        <p>文章内容</p>
+<a id="more"></a>
+<h1 id="sql注入攻击"><a href="#sql注入攻击" class="headerlink" title="sql注入攻击"></a>sql注入攻击</h1><p>MyBatis 避免了几乎所有的sql注入。mybatis在配置SQL语句的时候，有两种描述参数的方式。#{}和${}，尽量不要使用${}。使用“#”时，mybatis会使用预编译来处理参数，这样可以避免SQL注入。如果一定要使用$，则需要自己过滤用户输入。详细参见<a href="http://www.evil0x.com/posts/19367.html" target="_blank" rel="noopener">http://www.evil0x.com/posts/19367.html</a></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id="selectPerson" parameterType="int" resultType="hashmap"&gt; </span><br><span class="line">    <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> PERSON <span class="keyword">WHERE</span> <span class="keyword">ID</span> = <span class="comment">#&#123;id&#125; </span></span><br><span class="line">&lt;/<span class="keyword">select</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h1 id="xss攻击"><a href="#xss攻击" class="headerlink" title="xss攻击"></a>xss攻击</h1><p>XSS 全称(Cross Site Scripting) 跨站脚本攻击，可以使用如下方式防御xss攻击。</p>
@@ -138,7 +140,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2016/06/13/%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E9%A2%84%E9%98%B2%E7%AD%96%E7%95%A5/" data-id="ckbevickr000w39w7bpt34z4u" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2016/06/13/%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E%E9%A2%84%E9%98%B2%E7%AD%96%E7%95%A5/" data-id="ckbf2r6ah001e0qw72rkf25il" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li></ul>

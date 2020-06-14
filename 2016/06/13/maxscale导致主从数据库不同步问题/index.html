@@ -7,14 +7,14 @@
   
   <title>maxscale导致主从数据库不同步问题 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题描述数据库集群使用的是多主机同步模式（mariadb galera cluster），但使用了maxscale之后查询的结果导致数据不同步 复现步骤使用hibernate插入后立即查询（只要插入和查询离得足够近），会使slave和master机器查询出的结果不一致 问题定位maxscale从slave库查询导致和主机不一致 解决方案使用slavelag插件 编译安装maxscale准备 123">
+  <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="maxscale导致主从数据库不同步问题">
 <meta property="og:url" content="http://yxs1112003.github.io/2016/06/13/maxscale%E5%AF%BC%E8%87%B4%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="问题描述数据库集群使用的是多主机同步模式（mariadb galera cluster），但使用了maxscale之后查询的结果导致数据不同步 复现步骤使用hibernate插入后立即查询（只要插入和查询离得足够近），会使slave和master机器查询出的结果不一致 问题定位maxscale从slave库查询导致和主机不一致 解决方案使用slavelag插件 编译安装maxscale准备 123">
+<meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2016-06-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-14T07:20:28.000Z">
+<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
@@ -88,7 +88,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>数据库集群使用的是多主机同步模式（mariadb galera cluster），但使用了maxscale之后查询的结果导致数据不同步</p>
+        <p>文章内容</p>
+<a id="more"></a>
+<h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>数据库集群使用的是多主机同步模式（mariadb galera cluster），但使用了maxscale之后查询的结果导致数据不同步</p>
 <h3 id="复现步骤"><a href="#复现步骤" class="headerlink" title="复现步骤"></a>复现步骤</h3><p>使用hibernate插入后立即查询（只要插入和查询离得足够近），会使slave和master机器查询出的结果不一致</p>
 <h3 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h3><p>maxscale从slave库查询导致和主机不一致</p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>使用slavelag插件</p>
@@ -112,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2016/06/13/maxscale%E5%AF%BC%E8%87%B4%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" data-id="ckbevickl000p39w76upthi3j" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2016/06/13/maxscale%E5%AF%BC%E8%87%B4%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" data-id="ckbf2r6aa00100qw75khr71sc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>

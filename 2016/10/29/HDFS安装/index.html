@@ -7,14 +7,14 @@
   
   <title>Hadoop集群安装 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="###环境概述两个namenode： 172.21.0.23，172.21.0.24连个节点作为datanode：172.21.0.25,172.21.0.26 配置ssh免登陆在172.21.0.23创建sshkey的压缩包 1234cd ~&#x2F;.ssh&#x2F;                     ssh-keygen -t rsa              cat .&#x2F;id_rsa.pub &amp;gt">
+  <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hadoop集群安装">
 <meta property="og:url" content="http://yxs1112003.github.io/2016/10/29/HDFS%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="###环境概述两个namenode： 172.21.0.23，172.21.0.24连个节点作为datanode：172.21.0.25,172.21.0.26 配置ssh免登陆在172.21.0.23创建sshkey的压缩包 1234cd ~&#x2F;.ssh&#x2F;                     ssh-keygen -t rsa              cat .&#x2F;id_rsa.pub &amp;gt">
+<meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2016-10-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-14T07:20:30.000Z">
+<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
@@ -88,7 +88,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>###环境概述<br>两个namenode： 172.21.0.23，172.21.0.24<br>连个节点作为datanode：172.21.0.25,172.21.0.26</p>
+        <p>文章内容</p>
+<a id="more"></a>
+<p>###环境概述<br>两个namenode： 172.21.0.23，172.21.0.24<br>连个节点作为datanode：172.21.0.25,172.21.0.26</p>
 <h3 id="配置ssh免登陆"><a href="#配置ssh免登陆" class="headerlink" title="配置ssh免登陆"></a>配置ssh免登陆</h3><p>在172.21.0.23创建sshkey的压缩包</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh/                     </span><br><span class="line">ssh-keygen -t rsa              </span><br><span class="line">cat ./id_rsa.pub &gt;&gt; ./authorized_keys  <span class="comment"># 加入授权</span></span><br><span class="line">tar -zcf auth.tar.gz authorized_keys id_rsa id_rsa.pub</span><br></pre></td></tr></table></figure>
 <p>将auth.tar.gz复制到其他三个节点，替换原有的key文件,在namenode节点分别执行ssh，免密码登录</p>
@@ -146,7 +148,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2016/10/29/HDFS%E5%AE%89%E8%A3%85/" data-id="ckbevicke000d39w7fyi2gob2" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2016/10/29/HDFS%E5%AE%89%E8%A3%85/" data-id="ckbf2r69p000d0qw7h181ge4c" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
@@ -157,11 +159,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/03/spark-submit%E6%97%B6%E5%80%99%E6%B7%BB%E5%8A%A0jars/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/06/03/%E4%BD%BF%E7%94%A8Macpro%E5%88%9B%E5%BB%BAcentos7%E5%90%AF%E5%8A%A8%E7%9B%98/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          spark-submit时候添加jars
+          使用Macpro创建centos7启动盘
         
       </div>
     </a>

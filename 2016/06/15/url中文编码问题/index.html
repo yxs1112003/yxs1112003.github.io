@@ -7,14 +7,14 @@
   
   <title>url中文编码问题 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近写了一个词典程序，汉译英时会报错，因为url中不能含有中文字符。最终解决方案如下 通过如下形式可以将汉字转化为可以被url识别的编码 1234567891011# coding: utf-8import urllibimport sysstring &#x3D; sys.argv[1]string &#x3D; unicode(string, &quot;gbk&quot;)utf8_string &#x3D; string.encode(&quot;">
+  <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="url中文编码问题">
 <meta property="og:url" content="http://yxs1112003.github.io/2016/06/15/url%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="最近写了一个词典程序，汉译英时会报错，因为url中不能含有中文字符。最终解决方案如下 通过如下形式可以将汉字转化为可以被url识别的编码 1234567891011# coding: utf-8import urllibimport sysstring &#x3D; sys.argv[1]string &#x3D; unicode(string, &quot;gbk&quot;)utf8_string &#x3D; string.encode(&quot;">
+<meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2016-06-15T06:44:51.000Z">
-<meta property="article:modified_time" content="2020-06-14T07:18:27.000Z">
+<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
@@ -88,7 +88,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近写了一个词典程序，汉译英时会报错，因为url中不能含有中文字符。最终解决方案如下</p>
+        <p>文章内容</p>
+<a id="more"></a>
+<p>最近写了一个词典程序，汉译英时会报错，因为url中不能含有中文字符。最终解决方案如下</p>
 <p>通过如下形式可以将汉字转化为可以被url识别的编码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">string = sys.argv[<span class="number">1</span>]</span><br><span class="line">string = unicode(string, <span class="string">"gbk"</span>)</span><br><span class="line">utf8_string = string.encode(<span class="string">"utf-8"</span>)</span><br><span class="line">gbk_string = string.encode(<span class="string">"gbk"</span>)</span><br><span class="line">gbk = urllib.quote(gbk_string)</span><br><span class="line">utf8 = urllib.quote(utf8_string)</span><br><span class="line"><span class="keyword">print</span> gbk</span><br><span class="line"><span class="keyword">print</span> utf8</span><br></pre></td></tr></table></figure>
 <p>我上传的程序</p>
@@ -97,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2016/06/15/url%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" data-id="ckbevickn000r39w700gbh3rp" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2016/06/15/url%E4%B8%AD%E6%96%87%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" data-id="ckbf2r6ae00170qw7a1ni7zwd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
