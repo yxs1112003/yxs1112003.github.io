@@ -5,19 +5,21 @@
   
 
   
-  <title>ambari集群datanode出现OOM问题 | On The Road</title>
+  <title>Flink中的时间概念 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="文章内容">
+  <meta name="description" content="Event Time事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取 Ingestion Time(摄取时间)摄取时间指的是消息进入flink的时间 Processing Time处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生 三种时间关系示意图">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ambari集群datanode出现OOM问题">
-<meta property="og:url" content="http://yxs1112003.github.io/2012/06/15/ambari%E9%9B%86%E7%BE%A4datanode%E5%87%BA%E7%8E%B0OOM%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="Flink中的时间概念">
+<meta property="og:url" content="http://yxs1112003.github.io/2020/06/25/Flink%E6%97%B6%E9%97%B4/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="文章内容">
-<meta property="article:published_time" content="2012-06-15T06:44:51.000Z">
-<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
+<meta property="og:description" content="Event Time事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取 Ingestion Time(摄取时间)摄取时间指的是消息进入flink的时间 Processing Time处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生 三种时间关系示意图">
+<meta property="og:image" content="http://yxs1112003.github.io/2020/06/25/Flink%E6%97%B6%E9%97%B4/images/times_clocks.svg">
+<meta property="article:published_time" content="2020-06-25T04:50:30.000Z">
+<meta property="article:modified_time" content="2020-06-25T04:54:46.558Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yxs1112003.github.io/2020/06/25/Flink%E6%97%B6%E9%97%B4/images/times_clocks.svg">
   
     <link rel="alternate" href="/atom.xml" title="On The Road" type="application/atom+xml">
   
@@ -66,10 +68,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-ambari集群datanode出现OOM问题" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Flink时间" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2012/06/15/ambari%E9%9B%86%E7%BE%A4datanode%E5%87%BA%E7%8E%B0OOM%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2012-06-15T06:44:51.000Z" itemprop="datePublished">2012-06-15</time>
+    <a href="/2020/06/25/Flink%E6%97%B6%E9%97%B4/" class="article-date">
+  <time datetime="2020-06-25T04:50:30.000Z" itemprop="datePublished">2020-06-25</time>
 </a>
     
   </div>
@@ -80,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ambari集群datanode出现OOM问题
+      Flink中的时间概念
     </h1>
   
 
@@ -88,21 +90,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>文章内容</p>
-<a id="more"></a>
-
-<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>hadoop-worker004、hadoop-worker005有时候会断连接，ambari显示datanode dead，看日志里提示datanode OOM</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>查看是由于hadoop-worker004、hadoop-worker005 CPU和IO负载压力太大导致的</p>
-<p>经调查由于sql查询的数据在hadoop-worker004、hadoop-worker005上属于热点数据，且这两个节点数据比较多，需要做rebalance</p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="查看IO负载命令"><a href="#查看IO负载命令" class="headerlink" title="查看IO负载命令"></a>查看IO负载命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">utity占比，越接近100%，磁盘IO压力越大</span><br><span class="line">iostat -dmx 1</span><br></pre></td></tr></table></figure>
-
-
-
+        <h1 id="Event-Time"><a href="#Event-Time" class="headerlink" title="Event Time"></a>Event Time</h1><p>事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取</p>
+<h1 id="Ingestion-Time-摄取时间"><a href="#Ingestion-Time-摄取时间" class="headerlink" title="Ingestion Time(摄取时间)"></a>Ingestion Time(摄取时间)</h1><p>摄取时间指的是消息进入flink的时间</p>
+<h1 id="Processing-Time"><a href="#Processing-Time" class="headerlink" title="Processing Time"></a>Processing Time</h1><p>处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生</p>
+<h1 id="三种时间关系示意图"><a href="#三种时间关系示意图" class="headerlink" title="三种时间关系示意图"></a>三种时间关系示意图</h1><p><img src="images/times_clocks.svg" alt="times_clocks"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yxs1112003.github.io/2012/06/15/ambari%E9%9B%86%E7%BE%A4datanode%E5%87%BA%E7%8E%B0OOM%E9%97%AE%E9%A2%98/" data-id="ckbf2r6a0000r0qw71p7n50r8" class="article-share-link">Share</a>
+      <a data-url="http://yxs1112003.github.io/2020/06/25/Flink%E6%97%B6%E9%97%B4/" data-id="ckbub8xa80000udw72pce90bd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
@@ -113,15 +109,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/03/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Java线程池
-        
-      </div>
-    </a>
   
+    <a href="/2020/06/18/mysql%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95%E8%A7%A3%E5%86%B3%E7%A3%81%E7%9B%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mysql迁移数据目录解决磁盘不足问题</div>
+    </a>
   
 </nav>
 
