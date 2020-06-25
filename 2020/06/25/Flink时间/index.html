@@ -5,21 +5,22 @@
   
 
   
-  <title>Flink中的时间概念 | On The Road</title>
+  <title>Flink中的水印与时间 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Event Time事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取">
+  <meta name="description" content="watermark(水印）Flink中用于衡量event time进度的机制叫做水印 官方定义watermark流(水印流)作为数据流的一部分，并带有一个时间戳t，当watermark t声明event time达到了t时刻，表名该数据流中不存在时间戳t&#96;&lt;&#x3D; t的元素">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flink中的时间概念">
+<meta property="og:title" content="Flink中的水印与时间">
 <meta property="og:url" content="http://yxs1112003.github.io/2020/06/25/Flink%E6%97%B6%E9%97%B4/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="Event Time事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取">
+<meta property="og:description" content="watermark(水印）Flink中用于衡量event time进度的机制叫做水印 官方定义watermark流(水印流)作为数据流的一部分，并带有一个时间戳t，当watermark t声明event time达到了t时刻，表名该数据流中不存在时间戳t&#96;&lt;&#x3D; t的元素">
+<meta property="og:image" content="http://yxs1112003.github.io/images/warter_mark.png">
 <meta property="og:image" content="http://yxs1112003.github.io/images/times_clocks.svg">
 <meta property="article:published_time" content="2020-06-25T04:50:30.000Z">
-<meta property="article:modified_time" content="2020-06-25T05:03:03.900Z">
+<meta property="article:modified_time" content="2020-06-25T08:18:04.712Z">
 <meta property="article:author" content="yxs1112003">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yxs1112003.github.io/images/times_clocks.svg">
+<meta name="twitter:image" content="http://yxs1112003.github.io/images/warter_mark.png">
   
     <link rel="alternate" href="/atom.xml" title="On The Road" type="application/atom+xml">
   
@@ -82,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Flink中的时间概念
+      Flink中的水印与时间
     </h1>
   
 
@@ -90,14 +91,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Event-Time"><a href="#Event-Time" class="headerlink" title="Event Time"></a>Event Time</h1><p>事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取</p>
+        <h1 id="watermark-水印）"><a href="#watermark-水印）" class="headerlink" title="watermark(水印）"></a>watermark(水印）</h1><p>Flink中用于衡量event time进度的机制叫做水印</p>
+<h2 id="官方定义"><a href="#官方定义" class="headerlink" title="官方定义"></a>官方定义</h2><p>watermark流(水印流)作为数据流的一部分，并带有一个时间戳t，当watermark t声明event time达到了t时刻，表名该数据流中不存在时间戳t`&lt;= t的元素</p>
 <a id="more"></a>
 
-
-
-<h1 id="Ingestion-Time-摄取时间"><a href="#Ingestion-Time-摄取时间" class="headerlink" title="Ingestion Time(摄取时间)"></a>Ingestion Time(摄取时间)</h1><p>摄取时间指的是消息进入flink的时间</p>
-<h1 id="Processing-Time"><a href="#Processing-Time" class="headerlink" title="Processing Time"></a>Processing Time</h1><p>处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生</p>
-<h1 id="三种时间关系示意图"><a href="#三种时间关系示意图" class="headerlink" title="三种时间关系示意图"></a>三种时间关系示意图</h1><p><img src="/images/times_clocks.svg" alt="times_clocks"></p>
+<h2 id="对于watermark的理解"><a href="#对于watermark的理解" class="headerlink" title="对于watermark的理解"></a>对于watermark的理解</h2><p>在下文中的例子中，我们有一个带有时间戳的事件流，但是由于某种原因它们并不是按顺序到达的。图中的数字代表事件发生的时间戳。第一个到达的事件发生在时间 4，然后它后面跟着的是发生在更早时间（时间 2）的事件，以此类推：</p>
+<p><img src="/images/warter_mark.png" alt="warter_mark"></p>
+<p>注意这是一个按照事件时间处理的例子，这意味着时间戳反映的是事件发生的时间，而不是处理事件的时间。事件时间（Event-Time）处理的强大之处在于，无论是在处理实时的数据还是重新处理历史的数据，基于事件时间创建的流计算应用都能保证结果是一样的。</p>
+<p>现在假设我们正在尝试创建一个流计算排序算子。也就是处理一个乱序到达的事件流，并按照事件时间的顺序输出事件。</p>
+<h3 id="理解1"><a href="#理解1" class="headerlink" title="理解1"></a>理解1</h3><p>数据流中的第一个元素的时间是 4，但是我们不能直接将它作为排序后数据流的第一个元素并输出它。因为数据是乱序到达的，也许有一个更早发生的数据还没有到达。事实上，我们能预见一些这个流的未来，也就是我们的排序算子至少要等到 2 这条数据的到达再输出结果。</p>
+<p><em>有缓存，就必然有延迟。</em></p>
+<h3 id="理解2"><a href="#理解2" class="headerlink" title="理解2"></a>理解2</h3><p>如果我们做错了，我们可能会永远等待下去。首先，我们的应用程序从看到时间 4 的数据，然后看到时间 2 的数据。是否会有一个比时间 2 更早的数据到达呢？也许会，也许不会。我们可以一直等下去，但可能永远看不到 1 。</p>
+<p><em>最终，我们必须勇敢地输出 2 作为排序流的第一个结果。</em></p>
+<h3 id="理解3"><a href="#理解3" class="headerlink" title="理解3"></a>理解3</h3><p>我们需要的是某种策略，它定义了对于任何带时间戳的事件流，何时停止等待更早数据的到来。</p>
+<p><em>这正是 watermark 的作用，他们定义了何时不再等待更早的数据。</em></p>
+<p>Flink 中的事件时间处理依赖于一种特殊的带时间戳的元素，成为 watermark，它们会由数据源或是 watermark 生成器插入数据流中。具有时间戳 t 的 watermark 可以被理解为断言了所有时间戳小于或等于 t 的事件都（在某种合理的概率上）已经到达了。</p>
+<p>何时我们的排序算子应该停止等待，然后将事件 2 作为首个元素输出？答案是当收到时间戳为 2（或更大）的 watermark 时。</p>
+<h3 id="理解4"><a href="#理解4" class="headerlink" title="理解4"></a>理解4</h3><p><em>我们可以设想不同的策略来生成 watermark。</em></p>
+<p>我们知道每个事件都会延迟一段时间才到达，而这些延迟差异会比较大，所以有些事件会比其他事件延迟更多。一种简单的方法是假设这些延迟不会超过某个最大值。Flink 把这种策略称作 “有界无序生成策略”（bounded-out-of-orderness）。当然也有很多更复杂的方式去生成 watermark，但是对于大多数应用来说，固定延迟的方式已经足够了。</p>
+<h1 id="Flink中的时间"><a href="#Flink中的时间" class="headerlink" title="Flink中的时间"></a>Flink中的时间</h1><h2 id="Event-Time"><a href="#Event-Time" class="headerlink" title="Event Time"></a>Event Time</h2><p>事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取</p>
+<h2 id="Ingestion-Time-摄取时间"><a href="#Ingestion-Time-摄取时间" class="headerlink" title="Ingestion Time(摄取时间)"></a>Ingestion Time(摄取时间)</h2><p>摄取时间指的是消息进入flink的时间</p>
+<h2 id="Processing-Time"><a href="#Processing-Time" class="headerlink" title="Processing Time"></a>Processing Time</h2><p>处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生</p>
+<h2 id="三种时间关系示意图"><a href="#三种时间关系示意图" class="headerlink" title="三种时间关系示意图"></a>三种时间关系示意图</h2><p><img src="/images/times_clocks.svg" alt="times_clocks"></p>
 
       
     </div>
@@ -114,9 +129,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2020/06/18/mysql%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95%E8%A7%A3%E5%86%B3%E7%A3%81%E7%9B%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">mysql迁移数据目录解决磁盘不足问题</div>
+      <div class="article-nav-title">Flink中的并行度</div>
     </a>
   
 </nav>
@@ -167,7 +182,11 @@
       <ul>
         
           <li>
-            <a href="/2020/06/25/Flink%E6%97%B6%E9%97%B4/">Flink中的时间概念</a>
+            <a href="/2020/06/25/Flink%E6%97%B6%E9%97%B4/">Flink中的水印与时间</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/">Flink中的并行度</a>
           </li>
         
           <li>
@@ -180,10 +199,6 @@
         
           <li>
             <a href="/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/">inode磁盘清理</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/15/%E5%BB%BA%E8%90%BD%E5%9C%B0%E4%B8%B4%E6%97%B6%E8%A1%A8%E5%86%99%E5%85%A5%E5%BE%88%E6%85%A2%E5%AF%BC%E8%87%B4%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">建落地临时表写入很慢导致异常的解决方法</a>
           </li>
         
       </ul>
