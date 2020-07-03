@@ -63,6 +63,155 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Flink窗口" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/" class="article-date">
+  <time datetime="2020-07-03T04:50:30.000Z" itemprop="datePublished">2020-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/">Flink窗口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="什么是窗口"><a href="#什么是窗口" class="headerlink" title="什么是窗口"></a>什么是窗口</h1><p>Windows是处理流试计算的核心。 Windows将流分成有限个大小的“存储桶”，我们可以在“存储桶”上应用计算。</p>
+<h1 id="窗口类型"><a href="#窗口类型" class="headerlink" title="窗口类型"></a>窗口类型</h1><h2 id="Tumbling-Window"><a href="#Tumbling-Window" class="headerlink" title="Tumbling Window"></a>Tumbling Window</h2><p>翻滚窗口，无数据重叠</p>
+<p>滚动窗口分配器将每个元素分配给指定窗口大小的窗口。 滚动窗口具有固定的大小，并且不重叠。 例如，如果您指定大小为5分钟的翻滚窗口，则将评估当前窗口，并且每五分钟将启动一个新窗口，如下图所示。</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/07/03/Flink%E7%AA%97%E5%8F%A3/" data-id="ckc63eeyh00009hw787kefefl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ConcurrentHashMap如何实现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2020-06-30T06:40:30.000Z" itemprop="datePublished">2020-06-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/">ConcurrentHashMap如何实现的</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Jdk1-7的ConcurrentHashMap"><a href="#Jdk1-7的ConcurrentHashMap" class="headerlink" title="Jdk1.7的ConcurrentHashMap"></a>Jdk1.7的ConcurrentHashMap</h1><p>jdk1.7中采用<code>Segment</code> + <code>HashEntry</code>的方式进行实现，结构如下：</p>
+<p><img src="/images/jdk1.7_ConcurrentHashMap.png" alt="concurrenthashmap_java8"></p>
+<p>Segment数组的意义就是将一个大的table分割成多个小的table来进行加锁，也就是上面的提到的锁分离技术，而每一个Segment元素存储的是HashEntry数组+链表，这个和HashMap的数据存储结构一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> sshift = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> ssize = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (ssize &lt; concurrencyLevel) &#123;</span><br><span class="line">    ++sshift;</span><br><span class="line">    ssize &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，因为ssize用位于运算来计算（<code>ssize &lt;&lt;=1</code>），所以Segment的大小取值都是以2的N次方，无关concurrencyLevel的取值，当然concurrencyLevel最大只能用16位的二进制来表示，即65536，换句话说，Segment的大小最多65536个，没有指定concurrencyLevel元素初始化，Segment的大小ssize默认为16</p>
+<p>每一个Segment元素下的HashEntry的初始化也是按照位于运算来计算，用cap来表示，如下所示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cap = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span> (cap &lt; c)</span><br><span class="line">    cap &lt;&lt;= <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，HashEntry大小的计算也是2的N次方（cap &lt;&lt;=1）， cap的初始值为1，所以HashEntry最小的容量为2</p>
+<h2 id="put操作"><a href="#put操作" class="headerlink" title="put操作"></a>put操作</h2><p>对于ConcurrentHashMap的数据插入，这里要进行两次Hash去定位数据的存储位置</p>
+<p>从上Segment的继承体系可以看出，Segment实现了ReentrantLock,也就带有锁的功能，当执行put操作时，会进行第一次key的hash来定位Segment的位置，如果该Segment还没有初始化，即通过CAS操作进行赋值，然后进行第二次hash操作，找到相应的HashEntry的位置，这里会利用继承过来的锁的特性，在将数据插入指定的HashEntry位置时（链表的尾端），会通过继承ReentrantLock的tryLock（）方法尝试去获取锁，如果获取成功就直接插入相应的位置，如果已经有线程获取该Segment的锁，那当前线程会以自旋的方式去继续的调用tryLock（）方法去获取锁，超过指定次数就挂起，等待唤醒</p>
+<h1 id="Jdk1-8-ConcurrentHashMap"><a href="#Jdk1-8-ConcurrentHashMap" class="headerlink" title="Jdk1.8 ConcurrentHashMap"></a>Jdk1.8 ConcurrentHashMap</h1><p>Java 8为进一步提高并发性，摒弃了分段锁的方案，而是直接使用一个大的数组。同时为了提高哈希碰撞下的寻址性能，Java 8在链表长度超过一定阈值（8）时将链表（寻址时间复杂度为O(N)）转换为红黑树（寻址时间复杂度为O(long(N))）。其数据结构如下图所示</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/" data-id="ckc327ntd00009xw70z3cekih" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-两数相加" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" class="article-date">
+  <time datetime="2020-06-30T06:40:30.000Z" itemprop="datePublished">2020-06-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">2.两数相加</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="2-两数相加"><a href="#2-两数相加" class="headerlink" title="2. 两数相加"></a><a href="https://leetcode-cn.com/problems/add-two-numbers/" target="_blank" rel="noopener">2. 两数相加</a></h4><p>给出两个 <strong>非空</strong> 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 <strong>逆序</strong> 的方式存储的，并且它们的每个节点只能存储 <strong>一位</strong> 数字。</p>
+<p>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。</p>
+<p>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">输出：7 -&gt; 0 -&gt; 8</span><br><span class="line">原因：342 + 465 &#x3D; 807</span><br></pre></td></tr></table></figure>
+
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3>
+        
+          <p class="article-more-link">
+            <a href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" data-id="ckc327ntl00019xw71iny1c09" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Flink提交任务" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/26/Flink%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/" class="article-date">
@@ -373,140 +522,11 @@
 
 
   
-    <article id="post-请求被提交到已经删除的hiveserver2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/15/%E8%AF%B7%E6%B1%82%E8%A2%AB%E6%8F%90%E4%BA%A4%E5%88%B0%E5%B7%B2%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84hiveserver2/" class="article-date">
-  <time datetime="2020-06-15T06:44:51.000Z" itemprop="datePublished">2020-06-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/%E8%AF%B7%E6%B1%82%E8%A2%AB%E6%8F%90%E4%BA%A4%E5%88%B0%E5%B7%B2%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84hiveserver2/">beeline请求被提交到已经删除的hiveserver2节点</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文章内容</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/15/%E8%AF%B7%E6%B1%82%E8%A2%AB%E6%8F%90%E4%BA%A4%E5%88%B0%E5%B7%B2%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84hiveserver2/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/15/%E8%AF%B7%E6%B1%82%E8%A2%AB%E6%8F%90%E4%BA%A4%E5%88%B0%E5%B7%B2%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84hiveserver2/" data-id="ckbf2r6an001o0qw7bbu1agzt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-06-03-Docker安装superset" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/03/2020-06-03-Docker%E5%AE%89%E8%A3%85superset/" class="article-date">
-  <time datetime="2020-06-03T02:40:30.000Z" itemprop="datePublished">2020-06-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/03/2020-06-03-Docker%E5%AE%89%E8%A3%85superset/">Docker安装superset</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文章内容</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/03/2020-06-03-Docker%E5%AE%89%E8%A3%85superset/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/03/2020-06-03-Docker%E5%AE%89%E8%A3%85superset/" data-id="ckbf2r69400000qw7bh75f7mo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-06-03-Linux挂载分区parted命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/03/2020-06-03-Linux%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BAparted%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2020-06-03T02:40:30.000Z" itemprop="datePublished">2020-06-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/03/2020-06-03-Linux%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BAparted%E5%91%BD%E4%BB%A4/">Linux挂载分区parted命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文章内容</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/03/2020-06-03-Linux%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BAparted%E5%91%BD%E4%BB%A4/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/03/2020-06-03-Linux%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BAparted%E5%91%BD%E4%BB%A4/" data-id="ckbf2r69d00020qw7barv6oxx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -530,7 +550,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a>
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;">算法</a>
     </div>
   </div>
 
@@ -539,7 +559,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li></ul>
     </div>
   </div>
 
@@ -552,23 +572,23 @@
       <ul>
         
           <li>
+            <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/">Flink窗口</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/">ConcurrentHashMap如何实现的</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">2.两数相加</a>
+          </li>
+        
+          <li>
             <a href="/2020/06/26/Flink%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/">Flink提交任务</a>
           </li>
         
           <li>
             <a href="/2020/06/25/Flink%E6%97%B6%E9%97%B4/">Flink中的水印与时间</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/">Flink中的并行度</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/18/mysql%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95%E8%A7%A3%E5%86%B3%E7%A3%81%E7%9B%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/">mysql迁移数据目录解决磁盘不足问题</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/17/%E6%89%BE%E5%88%B0%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%E7%9A%84%E8%B5%B7%E5%A7%8B%E8%8A%82%E7%82%B9/">LeetCode 160. 相交链表</a>
           </li>
         
       </ul>
