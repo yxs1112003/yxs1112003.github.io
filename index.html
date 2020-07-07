@@ -63,6 +63,100 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-OOM问题排查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2020-07-06T02:40:30.000Z" itemprop="datePublished">2020-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">常见OOM及原因分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="常见OOM类型"><a href="#常见OOM类型" class="headerlink" title="常见OOM类型"></a>常见OOM类型</h1><h2 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a>堆溢出</h2><p>错误信息：java.lang.OutOfMemoryError: Java heap space </p>
+<p>Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径来避免垃圾回收机制清除这些对象，那么在对象数量到达最大堆的容量限制后就会产生内存溢出异常。 </p>
+        
+          <p class="article-more-link">
+            <a href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckcbalqch0001h5w75edw12jt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spark概念" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time datetime="2020-07-06T02:40:30.000Z" itemprop="datePublished">2020-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/">Spark专项训练</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spark部署模式"><a href="#Spark部署模式" class="headerlink" title="Spark部署模式"></a>Spark部署模式</h1><ol>
+<li>standalone模式，开启7077端口提供服务</li>
+<li>spark on yarn模式 ：<ol>
+<li>client 模式， driver运行在客户端，调试用 </li>
+<li>cluster模式， 分布式运行，driver运行在集群子节点 </li>
+</ol>
+</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/07/06/Spark%E6%A6%82%E5%BF%B5/" data-id="ckcbalqcq0003h5w7dxiuec8t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Flink窗口" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/" class="article-date">
@@ -345,6 +439,50 @@
 
 
   
+    <article id="post-arthas" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/20/arthas/" class="article-date">
+  <time datetime="2020-06-20T02:40:30.000Z" itemprop="datePublished">2020-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/20/arthas/">使用arthas分析presto宕机原因</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>Presto半夜总是宕机</p>
+<h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><p>使用arthas分析jvm使用情况</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/06/20/arthas/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/06/20/arthas/" data-id="ckcbalqca0000h5w7e5n3e6l7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mysql迁移数据目录解决磁盘不足问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/18/mysql%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95%E8%A7%A3%E5%86%B3%E7%A3%81%E7%9B%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98/" class="article-date">
@@ -389,139 +527,6 @@
 
 
   
-    <article id="post-找到两个单链表相交的起始节点" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/17/%E6%89%BE%E5%88%B0%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%E7%9A%84%E8%B5%B7%E5%A7%8B%E8%8A%82%E7%82%B9/" class="article-date">
-  <time datetime="2020-06-17T02:40:30.000Z" itemprop="datePublished">2020-06-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/17/%E6%89%BE%E5%88%B0%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%E7%9A%84%E8%B5%B7%E5%A7%8B%E8%8A%82%E7%82%B9/">LeetCode 160. 相交链表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> 编写一个程序，找到两个单链表相交的起始节点。 </p>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>快慢指针</p>
-<p>因为两个链表长度可能不一样，但是相交后的元素都是一样的，可以使用快慢指针</p>
-<p>***** 分别遍历链表，获取其长度，长链表命名为quickNode，短链表命名为slowNode，二者长度差为quickStep</p>
-<p>***** quickNode先运行quickStep步之后，此时两个链表长度相等，用一个循环就能找到相同起始节点</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/17/%E6%89%BE%E5%88%B0%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%E7%9A%84%E8%B5%B7%E5%A7%8B%E8%8A%82%E7%82%B9/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/17/%E6%89%BE%E5%88%B0%E4%B8%A4%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9B%B8%E4%BA%A4%E7%9A%84%E8%B5%B7%E5%A7%8B%E8%8A%82%E7%82%B9/" data-id="ckbk2hc1r0002fmw77sbkfjh2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-inode磁盘清理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/" class="article-date">
-  <time datetime="2020-06-15T06:44:51.000Z" itemprop="datePublished">2020-06-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/">inode磁盘清理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文章内容</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/" data-id="ckbf2r6a2000u0qw78zdtgobe" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-建落地临时表写入很慢导致异常的解决方法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/15/%E5%BB%BA%E8%90%BD%E5%9C%B0%E4%B8%B4%E6%97%B6%E8%A1%A8%E5%86%99%E5%85%A5%E5%BE%88%E6%85%A2%E5%AF%BC%E8%87%B4%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" class="article-date">
-  <time datetime="2020-06-15T06:44:51.000Z" itemprop="datePublished">2020-06-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/%E5%BB%BA%E8%90%BD%E5%9C%B0%E4%B8%B4%E6%97%B6%E8%A1%A8%E5%86%99%E5%85%A5%E5%BE%88%E6%85%A2%E5%AF%BC%E8%87%B4%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">建落地临时表写入很慢导致异常的解决方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>文章内容</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/15/%E5%BB%BA%E8%90%BD%E5%9C%B0%E4%B8%B4%E6%97%B6%E8%A1%A8%E5%86%99%E5%85%A5%E5%BE%88%E6%85%A2%E5%AF%BC%E8%87%B4%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/15/%E5%BB%BA%E8%90%BD%E5%9C%B0%E4%B8%B4%E6%97%B6%E8%A1%A8%E5%86%99%E5%85%A5%E5%BE%88%E6%85%A2%E5%AF%BC%E8%87%B4%E5%BC%82%E5%B8%B8%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" data-id="ckbf2r6ai001h0qw7236wftvj" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -540,7 +545,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
     </div>
   </div>
 
@@ -550,7 +555,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.33px;">算法</a>
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/jvm/" style="font-size: 13.33px;">jvm</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a>
     </div>
   </div>
 
@@ -572,6 +577,14 @@
       <ul>
         
           <li>
+            <a href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">常见OOM及原因分析</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/">Spark专项训练</a>
+          </li>
+        
+          <li>
             <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/">Flink窗口</a>
           </li>
         
@@ -581,14 +594,6 @@
         
           <li>
             <a href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">2.两数相加</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/26/Flink%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/">Flink提交任务</a>
-          </li>
-        
-          <li>
-            <a href="/2020/06/25/Flink%E6%97%B6%E9%97%B4/">Flink中的水印与时间</a>
           </li>
         
       </ul>

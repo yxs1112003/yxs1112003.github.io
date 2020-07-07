@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Spark专项训练 | On The Road</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Spark部署模式 standalone模式，开启7077端口提供服务 spark on yarn模式 ： client 模式， driver运行在客户端，调试用  cluster模式， 分布式运行，driver运行在集群子节点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark专项训练">
+<meta property="og:url" content="http://yinxs2003.github.io/2020/07/06/Spark%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="On The Road">
+<meta property="og:description" content="Spark部署模式 standalone模式，开启7077端口提供服务 spark on yarn模式 ： client 模式， driver运行在客户端，调试用  cluster模式， 分布式运行，driver运行在集群子节点">
+<meta property="article:published_time" content="2020-07-06T02:40:30.000Z">
+<meta property="article:modified_time" content="2020-07-07T02:02:17.370Z">
+<meta property="article:author" content="yinxs2003">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="On The Road" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">On The Road</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yinxs2003.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Spark概念" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time datetime="2020-07-06T02:40:30.000Z" itemprop="datePublished">2020-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Spark专项训练
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spark部署模式"><a href="#Spark部署模式" class="headerlink" title="Spark部署模式"></a>Spark部署模式</h1><ol>
+<li>standalone模式，开启7077端口提供服务</li>
+<li>spark on yarn模式 ：<ol>
+<li>client 模式， driver运行在客户端，调试用 </li>
+<li>cluster模式， 分布式运行，driver运行在集群子节点 </li>
+</ol>
+</li>
+</ol>
+<a id="more"></a>
+
+<h1 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h1><h2 id="什么是RDD"><a href="#什么是RDD" class="headerlink" title="什么是RDD"></a>什么是RDD</h2><p>弹性分布式数据集（RDD），Spark中的基本抽象。 </p>
+<p>代表着一种不可变的，可以被并行操作的集合， 这个类包含RDD所有的基本操作，例如map,filter,perssist</p>
+<h2 id="RDD有什么属性"><a href="#RDD有什么属性" class="headerlink" title="RDD有什么属性"></a>RDD有什么属性</h2><p> 一组分片</p>
+<p> 一个计算每个分区的函数 </p>
+<p> RDD之间的依赖关系 </p>
+<p> 一个Partitioner，即RDD的分片函数。 </p>
+<p> 一个列表，存储存取每个Partition的优先位置（preferred location） </p>
+<h2 id="RDD弹性表现在那哪些方面"><a href="#RDD弹性表现在那哪些方面" class="headerlink" title="RDD弹性表现在那哪些方面"></a>RDD弹性表现在那哪些方面</h2><p> 自动进行磁盘和内存存储的切换 </p>
+<p> 基于lineage的高效容错 </p>
+<p> task执行失败会进行重试 </p>
+<p> stage执行失败会进行重试，并且只重试失败的分片 </p>
+<p> checkpoint和persist数据的持久化缓存 </p>
+<h2 id="RDD的宽依赖窄依赖，stage划分"><a href="#RDD的宽依赖窄依赖，stage划分" class="headerlink" title="RDD的宽依赖窄依赖，stage划分"></a>RDD的宽依赖窄依赖，stage划分</h2><p>窄依赖： 窄依赖就是指父RDD的每个分区只被一个子RDD分区使用 </p>
+<p>宽依赖： 宽依赖就是指父RDD的每个分区都有可能被多个子RDD分区使用， 宽依赖（shuffle）由于依赖的上游RDD不止一个，所以往往需要跨节点传输数据。 </p>
+<p>stage： 窄依赖会被划分到同一个Stage中，这样它们就能以管道的方式迭代执行 ， 宽依赖往往对应着shuffle操作，当执行算子有shuffle操作的时候，就划分一个Stage，宽依赖是划分stage的依据 </p>
+<p>stage容灾： 窄依赖只需要重新执行父RDD的丢失分区的计算即可恢复。 宽依赖则需要考虑恢复所有父RDD的丢失分区，并且同一RDD下的其他分区数据也重新计算了一次。  ，</p>
+<h2 id="RDD持久化"><a href="#RDD持久化" class="headerlink" title="RDD持久化"></a>RDD持久化</h2><h3 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h3><p>cache是persist(STORAGE_LEVEL=MEMORY_ONLY) </p>
+<h3 id="Persist持久化策略"><a href="#Persist持久化策略" class="headerlink" title="Persist持久化策略"></a>Persist持久化策略</h3><p>MEMORY_ONLY ： 使用未序列化的Java对象格式，将数据保存在内存中。如果内存不够存放所有的数据，则数据可能就不会进行持久化。那么下次对这个RDD执行算子操作时，那些没有被持久化的数据，需要从源头处重新计算一遍。这是默认的持久化策略，使用cache()方法时，实际就是使用的这种持久化策略。 </p>
+<p>MEMORY_ONLY_SER： 基本含义同MEMORY_ONLY。唯一的区别是，会将RDD中的数据进行序列化，RDD的每个partition会被序列化成一个字节数组。这种方式更加节省内存，从而可以避免持久化的数据占用过多内存导致频繁GC。 </p>
+<p>MEMORY_AND_DISK ： 使用未序列化的Java对象格式，优先尝试将数据保存在内存中。如果内存不够存放所有的数据，会将数据写入磁盘文件中，下次对这个RDD执行算子时，持久化在磁盘文件中的数据会被读取出来使用。 </p>
+<p>MEMORY_AND_DISK_SER ： 基本含义同MEMORY_AND_DISK。唯一的区别是，会将RDD中的数据进行序列化，RDD的每个partition会被序列化成一个字节数组。这种方式更加节省内存，从而可以避免持久化的数据占用过多内存导致频繁GC。 </p>
+<p>DISK_ONLY： 使用未序列化的Java对象格式，将数据全部写入磁盘文件中。 </p>
+<p>MEMORY_ONLY_2,MEMORY_AND_DISK_2 ： 对于上述任意一种持久化策略，如果加上后缀_2，代表的是将每个持久化的数据，都复制一份副本，并将副本保存到其他节点上。这种基于副本的持久化机制主要用于进行容错。假如某个节点挂掉，节点的内存或磁盘中的持久化数据丢失了，那么后续对RDD计算时还可以使用该数据在其他节点上的副本。如果没有副本的话，就只能将这些数据从源头处重新计算一遍了。 </p>
+<h3 id="Checkpoint"><a href="#Checkpoint" class="headerlink" title="Checkpoint"></a>Checkpoint</h3><h4 id="哪些-RDD-需要-checkpoint？"><a href="#哪些-RDD-需要-checkpoint？" class="headerlink" title="哪些 RDD 需要 checkpoint？"></a>哪些 RDD 需要 checkpoint？</h4><p> 运算时间很长或运算量太大才能得到的 RDD 或是计算链过长或依赖其他 RDD 很多的 RDD </p>
+<h4 id="什么时候进行checkpoint"><a href="#什么时候进行checkpoint" class="headerlink" title="什么时候进行checkpoint"></a>什么时候进行checkpoint</h4><p>cache 机制是每计算出一个要 cache 的 partition 就直接将其 cache 到内存了。但 checkpoint 没有类似的方法，而是等到 job 结束后另外启动专门的 job 去完成 checkpoint 。  </p>
+<p>因此 checkpoint 的 RDD 会被计算两次。因此，在使用 rdd.checkpoint() 的时候，建议在该语句前面加上 rdd.cache()，这样第二次运行的 job 就不用再去计算该 rdd 了，直接读取 cache 写磁盘。 </p>
+<h4 id="Checkpoint和Cache，Persist区别"><a href="#Checkpoint和Cache，Persist区别" class="headerlink" title="Checkpoint和Cache，Persist区别"></a>Checkpoint和Cache，Persist区别</h4><h5 id="Checkpoint与Cache的区别"><a href="#Checkpoint与Cache的区别" class="headerlink" title="Checkpoint与Cache的区别"></a>Checkpoint与Cache的区别</h5><p>cache把 RDD 计算出来然后放在内存中， 但是RDD 的依赖链也不能丢掉， 当某个点某个 executor 宕了， 上面cache 的RDD就会丢掉， 需要通过依赖链重新计算出来；</p>
+<p>checkpoint 是把 RDD 保存在 HDFS中， 是多副本可靠存储，所以依赖链就可以丢掉了，就斩断了依赖链，因为checkpoint是需要把 job 重新从头算一遍， 最好先cache一下， checkpoint就可以直接保存缓存中的 RDD 了， 就不需要重头计算一遍了， 对性能有极大的提升。 </p>
+<h5 id="Checkpoint与Persist区别"><a href="#Checkpoint与Persist区别" class="headerlink" title="Checkpoint与Persist区别"></a>Checkpoint与Persist区别</h5><p>rdd.persist(StorageLevel.DISK_ONLY) 与 checkpoint 区别的是：前者虽然可以将 RDD 的 partition 持久化到磁盘，但该 partition 由 blockManager 管理。一旦 driver program 执行结束，也就是 executor 所在进程 CoarseGrainedExecutorBackend stop，blockManager 也会 stop，被 cache 到磁盘上的 RDD 也会被清空（整个 blockManager 使用的 local 文件夹被删除）。而 checkpoint 将 RDD 持久化到 HDFS 或本地文件夹，如果不被手动 remove 掉（ 话说怎么 remove checkpoint 过的 RDD？ ），是一直存在的，也就是说可以被下一个 driver program 使用，而 cached RDD 不能被其他 dirver program 使用。 </p>
+<h1 id="Spark工作流"><a href="#Spark工作流" class="headerlink" title="Spark工作流"></a>Spark工作流</h1><h2 id="提交任务之后发生了什么"><a href="#提交任务之后发生了什么" class="headerlink" title="提交任务之后发生了什么"></a>提交任务之后发生了什么</h2><ol>
+<li><p>构建Spark Application的运行环境（启动SparkContext） </p>
+</li>
+<li><p>SparkContext向资源管理器（可以是Standalone、Mesos或YARN）注册并申请运行Executor资源； </p>
+</li>
+<li><p>资源管理器分配Executor资源，Executor运行情况将随着心跳发送到资源管理器上；（yarn会分配worker上的资源，worker将运行情况随心跳发送给executor） </p>
+</li>
+<li><p>SparkContext构建成DAG图，将DAG图分解成Stage，并把Taskset发送给Task Scheduler </p>
+</li>
+<li><p>Executor向SparkContext申请Task，Task Scheduler将Task发放给Executor运行，SparkContext将应用程序代码发放给Executor。 </p>
+</li>
+<li><p>Task在Executor上运行，运行完毕释放所有资源。 </p>
+</li>
+</ol>
+<h2 id="Spark组件作用"><a href="#Spark组件作用" class="headerlink" title="Spark组件作用"></a>Spark组件作用</h2><p>master : 管理节点不参与运算 </p>
+<p>worker : 分配任务给executor，向master汇报资源使用情况 </p>
+<p>driver : 一个Spark作业运行时包括一个Driver进程，也是作业的主进程，具有main函数，并且有SparkContext的实例，是程序的人口点 , 作用：向集群申请资源，向master注册信息，负责作业调度（生成stage层，并将task任务分配到executor上） </p>
+<p>sparkContext : 向yarn申请资源 </p>
+<p>client : 提交程序的入口 </p>
+<h2 id="对于-Spark-中的数据倾斜问题你有什么好的方案？"><a href="#对于-Spark-中的数据倾斜问题你有什么好的方案？" class="headerlink" title="对于 Spark 中的数据倾斜问题你有什么好的方案？"></a>对于 Spark 中的数据倾斜问题你有什么好的方案？</h2><h3 id="什么是数据倾斜"><a href="#什么是数据倾斜" class="headerlink" title="什么是数据倾斜"></a>什么是数据倾斜</h3><p>对 Spark/Hadoop 这样的大数据系统来讲，数据量大并不可怕，可怕的是数据倾斜。数据倾斜指的是，并行处理的数据集中，某一部分（如 Spark 或 Kafka 的一个 Partition）的数据显著多于其它部分，从而使得该部分的处理速度成为整个数据集处理的瓶颈（木桶效应）。 </p>
+<h3 id="数据倾斜是如何造成的"><a href="#数据倾斜是如何造成的" class="headerlink" title="数据倾斜是如何造成的"></a>数据倾斜是如何造成的</h3><p>某个stage中，包含N个task，前N-1个任务执行耗时很短，第N个执行耗时很长，这样导致无法很好利用并行，造成所有任务都在等第N个任务执行完成 </p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="调整并行度，发生数据倾斜的任务分成多个任务并行执行"><a href="#调整并行度，发生数据倾斜的任务分成多个任务并行执行" class="headerlink" title="调整并行度，发生数据倾斜的任务分成多个任务并行执行"></a>调整并行度，发生数据倾斜的任务分成多个任务并行执行</h4><p>Spark 在做 Shuffle 时，默认使用 HashPartitioner对数据进行分区。如果并行度设置的不合适，可能造成大量不相同的 Key 对应的数据被分配到了同一个 Task 上，造成该 Task 所处理的数据远大于其它 Task，从而造成数据倾斜。</p>
+<h4 id="自定义Partitioner"><a href="#自定义Partitioner" class="headerlink" title="自定义Partitioner"></a>自定义Partitioner</h4><p>使用自定义的 Partitioner（默认为 HashPartitioner），将原本被分配到同一个 Task 的不同 Key 分配到不同 Task </p>
+<h4 id="将-Reduce-side（侧）-Join-转变为-Map-side（侧）-Join"><a href="#将-Reduce-side（侧）-Join-转变为-Map-side（侧）-Join" class="headerlink" title="将 Reduce side（侧） Join 转变为 Map side（侧） Join"></a>将 Reduce side（侧） Join 转变为 Map side（侧） Join</h4><p>通过 Spark 的 Broadcast 机制，将 Reduce 侧 Join 转化为 Map 侧 Join，避免 Shuffle 从而完全消除 Shuffle 带来的数据倾斜。 </p>
+<h4 id="为数据量特别大的-Key-增加随机前-后缀"><a href="#为数据量特别大的-Key-增加随机前-后缀" class="headerlink" title="为数据量特别大的 Key 增加随机前/后缀"></a>为数据量特别大的 Key 增加随机前/后缀</h4><p>为数据量特别大的 Key 增加随机前/后缀，使得原来 Key 相同的数据变为 Key 不相同的数据，从而使倾斜的数据集分散到不同的 Task 中，彻底解决数据倾斜问题。Join 另一则的数据中，与倾斜 Key 对应的部分数据，与随机前缀集作笛卡尔乘积，从而保证无论数据倾斜侧倾斜 Key 如何加前缀，都能与之正常 Join。 </p>
+<h1 id="Shuffle"><a href="#Shuffle" class="headerlink" title="Shuffle"></a>Shuffle</h1><h2 id="什么是Shuffle"><a href="#什么是Shuffle" class="headerlink" title="什么是Shuffle"></a>什么是Shuffle</h2><p>某种具有共同特征的数据汇聚到一个计算节点上进行计算</p>
+<p>另一种说法： 将相同的 Key 分发至同一个 Reducer上进行处理 </p>
+<h2 id="如何避免shuffle"><a href="#如何避免shuffle" class="headerlink" title="如何避免shuffle"></a>如何避免shuffle</h2><p>能避免则尽可能避免使用 reduceByKey、join、distinct、repartition 等会进行 shuffle 的算子, 尽量使用 map 类的非 shuffle 算子 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yinxs2003.github.io/2020/07/06/Spark%E6%A6%82%E5%BF%B5/" data-id="ckcbalqcq0003h5w7dxiuec8t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          常见OOM及原因分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Flink窗口</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/" rel="tag">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/jvm/" style="font-size: 13.33px;">jvm</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/06/">June 2012</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/06/OOM%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">常见OOM及原因分析</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/">Spark专项训练</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/03/Flink%E7%AA%97%E5%8F%A3/">Flink窗口</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/">ConcurrentHashMap如何实现的</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/30/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">2.两数相加</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yinxs2003<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
