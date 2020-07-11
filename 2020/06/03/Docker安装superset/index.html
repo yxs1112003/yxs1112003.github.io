@@ -5,16 +5,16 @@
   
 
   
-  <title>手动编译安装flink，适配ambari hdp版本hadoop | On The Road</title>
+  <title>Docker安装superset | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="文章内容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="手动编译安装flink，适配ambari hdp版本hadoop">
-<meta property="og:url" content="http://yinxs2003.github.io/2020/06/03/2020-06-03-%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85flink%EF%BC%8C%E9%80%82%E9%85%8Dhdp%E7%89%88%E6%9C%AChadoop/index.html">
+<meta property="og:title" content="Docker安装superset">
+<meta property="og:url" content="http://yinxs2003.github.io/2020/06/03/Docker%E5%AE%89%E8%A3%85superset/index.html">
 <meta property="og:site_name" content="On The Road">
 <meta property="og:description" content="文章内容">
 <meta property="article:published_time" content="2020-06-03T02:40:30.000Z">
-<meta property="article:modified_time" content="2020-06-14T13:06:21.000Z">
+<meta property="article:modified_time" content="2020-06-18T00:46:18.000Z">
 <meta property="article:author" content="yinxs2003">
 <meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
@@ -66,9 +66,9 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-2020-06-03-手动编译安装flink，适配hdp版本hadoop" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Docker安装superset" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/03/2020-06-03-%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85flink%EF%BC%8C%E9%80%82%E9%85%8Dhdp%E7%89%88%E6%9C%AChadoop/" class="article-date">
+    <a href="/2020/06/03/Docker%E5%AE%89%E8%A3%85superset/" class="article-date">
   <time datetime="2020-06-03T02:40:30.000Z" itemprop="datePublished">2020-06-03</time>
 </a>
     
@@ -80,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      手动编译安装flink，适配ambari hdp版本hadoop
+      Docker安装superset
     </h1>
   
 
@@ -91,22 +91,20 @@
         <p>文章内容</p>
 <a id="more"></a>
 
-<h1 id="找到ambari-hadoop版本"><a href="#找到ambari-hadoop版本" class="headerlink" title="找到ambari hadoop版本"></a>找到ambari hadoop版本</h1><p>在hdp下载目录找到当前hadoop版本</p>
-<p><a href="http://repo.hortonworks.com/content/repositories/releases/org/apache/hadoop/hadoop-common/" target="_blank" rel="noopener">http://repo.hortonworks.com/content/repositories/releases/org/apache/hadoop/hadoop-common/</a></p>
-<p>前面是hadoop版本，后面是hdp版本</p>
-<h1 id="clone-flink"><a href="#clone-flink" class="headerlink" title="clone flink"></a>clone flink</h1><p>clone flink源码</p>
-<p>git clone <a href="https://github.com/apache/flink.git" target="_blank" rel="noopener">https://github.com/apache/flink.git</a></p>
-<p>切换分支</p>
-<h1 id="手动编译"><a href="#手动编译" class="headerlink" title="手动编译"></a>手动编译</h1><p>在工程目录执行 git checkout release-1.6.4-rc1</p>
-<p>Flink编译安装</p>
-<p>mvn clean install -DskipTests -Drat.skip=true -Pvendor-repos -Dhadoop.version=2.7.3.2.6.5.0-292</p>
-<p>参考：</p>
-<p><a href="https://www.bbsmax.com/A/B0zqV4OnJv/" target="_blank" rel="noopener">https://www.bbsmax.com/A/B0zqV4OnJv/</a></p>
+<h1 id="挂载目录到本地"><a href="#挂载目录到本地" class="headerlink" title="挂载目录到本地"></a>挂载目录到本地</h1><p>mkdir /Users/yangaipeng/Desktop/incubator-superset/docker_superset/superset</p>
+<h1 id="启动docker-superset"><a href="#启动docker-superset" class="headerlink" title="启动docker superset"></a>启动docker superset</h1><p>docker run -d -p 8088:8088 -v /Users/yangaipeng/Desktop/incubator-superset/docker_superset/superset:/home/superset –name superset2 superset-release-tag</p>
+<h1 id="增加配置文件"><a href="#增加配置文件" class="headerlink" title="增加配置文件"></a>增加配置文件</h1><p>将配置文件superset_config.py放到/Users/yangaipeng/Desktop/incubator-superset/docker_superset/superset目录下</p>
+<p>在superset_config.py将mysql地址配置为host.docker.internal，表示让docker中的superset访问本机数据库</p>
+<h1 id="设置用户名和密码"><a href="#设置用户名和密码" class="headerlink" title="设置用户名和密码"></a>设置用户名和密码</h1><p>docker exec -it 2326fa0a7d8b fabmanager create-admin –app superset</p>
+<h1 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h1><p>docker exec -it 2326fa0a7d8b superset db upgrade</p>
+<h1 id="superset初始化"><a href="#superset初始化" class="headerlink" title="superset初始化"></a>superset初始化</h1><p>docker exec -it 2326fa0a7d8b superset init</p>
+<h1 id="开启superset服务"><a href="#开启superset服务" class="headerlink" title="开启superset服务"></a>开启superset服务</h1><p>docker exec -it 2326fa0a7d8b superset runserver</p>
+<h1 id="使用root用户运行docker-bash"><a href="#使用root用户运行docker-bash" class="headerlink" title="使用root用户运行docker bash"></a>使用root用户运行docker bash</h1><p>docker –user root -it exec 1b9e081ef94f bash</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/06/03/2020-06-03-%E6%89%8B%E5%8A%A8%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85flink%EF%BC%8C%E9%80%82%E9%85%8Dhdp%E7%89%88%E6%9C%AChadoop/" data-id="ckbf2r69j00070qw700m1c1fe" class="article-share-link">Share</a>
+      <a data-url="http://yinxs2003.github.io/2020/06/03/Docker%E5%AE%89%E8%A3%85superset/" data-id="ckch4grog0000jrw7fp3k0bqy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
@@ -117,19 +115,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/03/2020-06-03-Presto%E5%AF%BC%E5%87%BA%E5%88%B0csv/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/06/03/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Presto导出到csv
+          Java线程池
         
       </div>
     </a>
   
   
-    <a href="/2020/06/03/2020-06-03-spark-submit%E6%97%B6%E5%80%99%E6%B7%BB%E5%8A%A0jars/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/06/03/Linux%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BAparted%E5%91%BD%E4%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">spark-submit时候添加jars</div>
+      <div class="article-nav-title">Linux挂载分区parted命令</div>
     </a>
   
 </nav>
@@ -158,7 +156,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/jvm/" style="font-size: 12.5px;">jvm</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 17.5px;">算法</a>
+      <a href="/tags/JVM/" style="font-size: 10px;">JVM</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/jvm/" style="font-size: 13.33px;">jvm</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 20px;">大数据</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px;">算法</a>
     </div>
   </div>
 
@@ -180,7 +178,7 @@
       <ul>
         
           <li>
-            <a href="/2020/07/07/3_%E6%9C%80%E9%95%BF%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%90%E4%B8%B2/">无重复最长子串</a>
+            <a href="/2020/07/07/%E6%97%A0%E9%87%8D%E5%A4%8D%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">无重复最长子串</a>
           </li>
         
           <li>
