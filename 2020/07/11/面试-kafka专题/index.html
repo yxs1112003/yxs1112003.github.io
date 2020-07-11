@@ -7,14 +7,14 @@
   
   <title>面试-Kafka专题 | On The Road</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用Kafka时会遇到的问题 Kafka速度很快的原因 如何保证消息不丢失 Offset怎么保存 Consumer重复消费怎么处理 如何保证消息的有序性 数据倾斜怎么处理 一个Topic分配多少个Partition合适以及修改Partition的限制有哪些  Kafka速度很快的原因 磁盘的顺序读写 使用操作系统的Page Cache，而不是jvm内存，这样能极大加快读写速度。避免Object对象">
+  <meta name="description" content="使用Kafka时会遇到的问题 Kafka速度很快的原因 如何保证消息不丢失 Offset怎么保存 Consumer重复消费怎么处理 如何保证消息的有序性 数据倾斜怎么处理 一个Topic分配多少个Partition合适以及修改Partition的限制有哪些">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试-Kafka专题">
 <meta property="og:url" content="http://yinxs2003.github.io/2020/07/11/%E9%9D%A2%E8%AF%95-kafka%E4%B8%93%E9%A2%98/index.html">
 <meta property="og:site_name" content="On The Road">
-<meta property="og:description" content="使用Kafka时会遇到的问题 Kafka速度很快的原因 如何保证消息不丢失 Offset怎么保存 Consumer重复消费怎么处理 如何保证消息的有序性 数据倾斜怎么处理 一个Topic分配多少个Partition合适以及修改Partition的限制有哪些  Kafka速度很快的原因 磁盘的顺序读写 使用操作系统的Page Cache，而不是jvm内存，这样能极大加快读写速度。避免Object对象">
+<meta property="og:description" content="使用Kafka时会遇到的问题 Kafka速度很快的原因 如何保证消息不丢失 Offset怎么保存 Consumer重复消费怎么处理 如何保证消息的有序性 数据倾斜怎么处理 一个Topic分配多少个Partition合适以及修改Partition的限制有哪些">
 <meta property="article:published_time" content="2020-07-11T04:44:51.000Z">
-<meta property="article:modified_time" content="2020-07-11T06:56:05.090Z">
+<meta property="article:modified_time" content="2020-07-11T07:23:59.722Z">
 <meta property="article:author" content="yinxs2003">
 <meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
@@ -97,14 +97,14 @@
 <li>数据倾斜怎么处理</li>
 <li>一个Topic分配多少个Partition合适以及修改Partition的限制有哪些</li>
 </ol>
+<a id="more"></a>
+
 <h1 id="Kafka速度很快的原因"><a href="#Kafka速度很快的原因" class="headerlink" title="Kafka速度很快的原因"></a>Kafka速度很快的原因</h1><ol>
 <li>磁盘的顺序读写</li>
 <li>使用操作系统的Page Cache，而不是jvm内存，这样能极大加快读写速度。避免Object对象比在Linux对象更大的消耗，避免jvm数据增多GC变慢的问题</li>
 <li>零拷贝，Page Cache 结合 sendfile 方法，避免拷贝到用户态内存操作，Kafka消费端的性能也大幅提升。这也是为什么有时候消费端在不断消费数据时，我们并没有看到磁盘io比较高，此刻正是操作系统缓存在提供数据。</li>
 <li>批量读写，批量压缩：把所有消息都变成一个批量文件，并且执行合理的批量压缩，减少网络IO消耗</li>
 </ol>
-<a id="more"></a>
-
 <h1 id="如何保证消息不丢失"><a href="#如何保证消息不丢失" class="headerlink" title="如何保证消息不丢失"></a>如何保证消息不丢失</h1><h2 id="消息发布的可靠性"><a href="#消息发布的可靠性" class="headerlink" title="消息发布的可靠性"></a>消息发布的可靠性</h2><p>场景：Producer-&gt;Broker</p>
 <ol>
 <li>当Producer向Broker发消息时，一旦这条消息被commit，因为replication的存在，它就不会丢失</li>
@@ -125,7 +125,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yinxs2003.github.io/2020/07/11/%E9%9D%A2%E8%AF%95-kafka%E4%B8%93%E9%A2%98/" data-id="ckchb8o3p0002osw72wlxb9qo" class="article-share-link">Share</a>
+      <a data-url="http://yinxs2003.github.io/2020/07/11/%E9%9D%A2%E8%AF%95-kafka%E4%B8%93%E9%A2%98/" data-id="ckchcujvn001o1cw7g7ykgavg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
