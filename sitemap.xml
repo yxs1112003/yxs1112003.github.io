@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yinxs2003.github.io/about/index.html</loc>
+    
+    <lastmod>2020-07-15T07:30:00.362Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yinxs2003.github.io/2020/06/03/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
     
     <lastmod>2020-07-15T06:46:34.703Z</lastmod>
@@ -215,13 +222,6 @@
     <loc>https://yinxs2003.github.io/categories/index.html</loc>
     
     <lastmod>2020-07-15T03:46:43.804Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yinxs2003.github.io/about/index.html</loc>
-    
-    <lastmod>2020-07-11T08:26:58.406Z</lastmod>
     
   </url>
   
