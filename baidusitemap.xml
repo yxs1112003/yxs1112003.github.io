@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://yinxs2003.github.io/2020/07/20/ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2020-07-20</lastmod>
+  </url>  <url>
+    <loc>https://yinxs2003.github.io/2020/07/10/python3%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2020-07-20</lastmod>
+  </url>  <url>
     <loc>https://yinxs2003.github.io/2020/06/03/Java%E7%BA%BF%E7%A8%8B%E6%B1%A0/</loc>
     <lastmod>2020-07-15</lastmod>
   </url>  <url>
@@ -74,9 +80,6 @@
     <lastmod>2020-07-15</lastmod>
   </url>  <url>
     <loc>https://yinxs2003.github.io/2020/06/20/arthas/</loc>
-    <lastmod>2020-07-15</lastmod>
-  </url>  <url>
-    <loc>https://yinxs2003.github.io/2020/07/10/ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/</loc>
     <lastmod>2020-07-15</lastmod>
   </url>  <url>
     <loc>https://yinxs2003.github.io/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/</loc>
