@@ -5,8 +5,8 @@
     
     <entry>
       <title>Centos7安装python3</title>
-      <link href="/2020/07/20/ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/"/>
-      <url>/2020/07/20/ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/</url>
+      <link href="/2020/07/20/Centos7%E5%AE%89%E8%A3%85python3/"/>
+      <url>/2020/07/20/Centos7%E5%AE%89%E8%A3%85python3/</url>
       
         <content type="html"><![CDATA[<h2 id="下载python3安装包"><a href="#下载python3安装包" class="headerlink" title="下载python3安装包"></a>下载python3安装包</h2><p>wget -c <a href="https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz" target="_blank" rel="noopener">https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz</a></p><h2 id="安装linux依赖"><a href="#安装linux依赖" class="headerlink" title="安装linux依赖"></a>安装linux依赖</h2><p>yum install libffi-devel openssl openssl-devel sqlite-devel bzip2-devel -y</p><p>在源码安装文件中编辑文件Modules/Setup.dist</p><h2 id="安装openssl"><a href="#安装openssl" class="headerlink" title="安装openssl"></a>安装openssl</h2><p>在源码安装文件中编辑文件Modules/Setup.dist</p><p>去掉如下注释</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SSL=/usr/local/ssl</span></span><br><span class="line">_ssl _ssl.c \</span><br><span class="line"> -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \</span><br><span class="line"> -L$(SSL)/lib -lssl -lcrypto</span><br></pre></td></tr></table></figure><h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><p>mkdir /usr/python3</p><p>cd Python-3.7.3</p><p>./configure –prefix=/usr/python3 –enable-loadable-sqlite-extensions &amp;&amp; make &amp;&amp; make install</p><p>ln -s /usr/python3/bin/python3 /usr/bin/python3</p><p>ln -s /usr/python3/bin/pip3 /usr/bin/pip3</p>]]></content>
       
@@ -80,10 +80,35 @@
     
     <entry>
       <title>Ambari显示heartbeat_lost问题</title>
-      <link href="/2020/07/10/python3%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
-      <url>/2020/07/10/python3%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
+      <link href="/2020/07/10/python3_spark%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
+      <url>/2020/07/10/python3_spark%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
       
         <content type="html"><![CDATA[<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>重启heartbeat lost机器的ambari-agent</p><h1 id="重启命令"><a href="#重启命令" class="headerlink" title="重启命令"></a>重启命令</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ambari-agent start</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>python3下配置spark环境</title>
+      <link href="/2020/07/10/Ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/"/>
+      <url>/2020/07/10/Ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<p>在/etc/profile中增加如下内容</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_191</span><br><span class="line">export PYSPARK_PYTHON=/usr/python3/bin/python3</span><br><span class="line">export PYSPARK_DRIVER_PYTHON=/usr/python3/bin/python3</span><br><span class="line">export PYSPARK_SUBMIT_ARGS="--master local pyspark-shell"</span><br><span class="line">export HADOOP_USER_CLASSPATH_FIRST=true</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export MAVEN_HOME=/usr/local/maven/apache-maven-3.5.4</span><br><span class="line">export SPARK_HOME=/usr/hdp/2.6.5.0-292/spark2</span><br><span class="line">export HADOOP_HOME=/usr/hdp/current/hadoop-client</span><br><span class="line">export HIVE_HOME=/usr/hdp/current/hive-server2-hive2</span><br><span class="line">export PATH=$SPARK_HOME/bin:$MAVEN_HOME/bin:$PATH</span><br></pre></td></tr></table></figure><p>再执行</p><p>source /etc/profile</p>]]></content>
       
       
       <categories>
