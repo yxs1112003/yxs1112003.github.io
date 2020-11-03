@@ -1,16 +1,266 @@
-<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Flink窗口 | 工作随笔</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Flink窗口</h1><a id="logo" href="/.">工作随笔</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Flink窗口</h1><div class="post-meta">2020-07-03<span> | </span><span class="category"><a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">Contents</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是窗口"><span class="toc-number">1.</span> <span class="toc-text">什么是窗口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#窗口类型"><span class="toc-number">2.</span> <span class="toc-text">窗口类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tumbling-Window"><span class="toc-number">2.1.</span> <span class="toc-text">Tumbling Window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sliding-Window"><span class="toc-number">2.2.</span> <span class="toc-text">Sliding Window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Session-Window"><span class="toc-number">2.3.</span> <span class="toc-text">Session Window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Global-Windows"><span class="toc-number">2.4.</span> <span class="toc-text">Global Windows</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#窗口函数"><span class="toc-number">3.</span> <span class="toc-text">窗口函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ReduceFunction"><span class="toc-number">3.1.</span> <span class="toc-text">ReduceFunction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AggregateFunction"><span class="toc-number">3.2.</span> <span class="toc-text">AggregateFunction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FoldFunction"><span class="toc-number">3.3.</span> <span class="toc-text">FoldFunction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ProcessWindowFunction"><span class="toc-number">3.4.</span> <span class="toc-text">ProcessWindowFunction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ProcessWindowFunction-with-Incremental-Aggregation"><span class="toc-number">3.5.</span> <span class="toc-text">ProcessWindowFunction with Incremental Aggregation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用ReduceFunction的增量窗口聚合"><span class="toc-number">3.5.0.1.</span> <span class="toc-text">使用ReduceFunction的增量窗口聚合</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Using-per-window-state-in-ProcessWindowFunction"><span class="toc-number">3.6.</span> <span class="toc-text">Using per-window state in ProcessWindowFunction</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Triggers"><span class="toc-number">4.</span> <span class="toc-text">Triggers</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Evictors"><span class="toc-number">5.</span> <span class="toc-text">Evictors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Allowed-Lateness"><span class="toc-number">6.</span> <span class="toc-text">Allowed Lateness</span></a></li></ol></div></div><div class="post-content"><h1 id="什么是窗口"><a href="#什么是窗口" class="headerlink" title="什么是窗口"></a>什么是窗口</h1><p>Windows是处理流试计算的核心。 Windows将流分成有限个大小的“存储桶”，我们可以在“存储桶”上应用计算。</p>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="yinxs2003">
+  <meta name="keywords" content="">
+  <title>Flink窗口 - 工作随笔</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="/css/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>工作随笔</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                目录
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                Links
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-03 12:50" pubdate>
+        July 3, 2020 pm
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Flink窗口</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：4 months ago
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="什么是窗口"><a href="#什么是窗口" class="headerlink" title="什么是窗口"></a>什么是窗口</h1><p>Windows是处理流试计算的核心。 Windows将流分成有限个大小的“存储桶”，我们可以在“存储桶”上应用计算。</p>
 <h1 id="窗口类型"><a href="#窗口类型" class="headerlink" title="窗口类型"></a>窗口类型</h1><h2 id="Tumbling-Window"><a href="#Tumbling-Window" class="headerlink" title="Tumbling Window"></a>Tumbling Window</h2><p>翻滚窗口，无数据重叠</p>
 <p>滚动窗口分配器将每个元素分配给指定窗口大小的窗口。 滚动窗口具有固定的大小，并且不重叠。 例如，如果您指定大小为5分钟的翻滚窗口，则将评估当前窗口，并且每五分钟将启动一个新窗口，如下图所示。</p>
 <a id="more"></a>
 
-<p><img src="/images/tumbling-windows.svg" alt="tumbling-windows"></p>
+<p><img src="/images/tumbling-windows.svg" srcset="/img/loading.gif" alt="tumbling-windows"></p>
 <h2 id="Sliding-Window"><a href="#Sliding-Window" class="headerlink" title="Sliding Window"></a>Sliding Window</h2><p>滑动窗口，可数据重叠</p>
 <p>滑动窗口分配器将元素分配给固定长度的窗口。和滚动窗口相比，窗口大小可以被windows param参数控制，一个额外的滑动参数控制滑动窗口的滑动频率。因此滑动窗口是可以重复的当滑动大小小于窗口大小。在这种情况下，元素可以被分配给多个窗口（可以重复）</p>
 <p>例如：你可以存在一组长度为10分钟的窗口集合，这样你可以每隔5分钟就得到下一个窗口，且包含最近10分钟的所有事件，示意图如下所示</p>
-<p><img src="/images/sliding-windows.svg" alt="sliding-windows"></p>
+<p><img src="/images/sliding-windows.svg" srcset="/img/loading.gif" alt="sliding-windows"></p>
 <h2 id="Session-Window"><a href="#Session-Window" class="headerlink" title="Session Window"></a>Session Window</h2><p>Session Window，活动时间间隙相等的窗口</p>
 <p>会话窗口分配器按活动会话对元素进行分组。与滚动窗口和滑动窗口相比，会话窗口不重叠且没有固定的开始和结束时间。 相反，当会话窗口在一定时间段内未接收到元素时（即，发生不活动间隙时），它将关闭。 会话窗口分配器可以配置有静态会话间隔，也可以配置有会话间隔提取器功能，该功能定义不活动的时间长度。 当该时间段到期时，当前会话将关闭，随后的元素将分配给新的会话窗口。</p>
-<p><img src="/images/session-windows.svg" alt="sliding-windows"></p>
+<p><img src="/images/session-windows.svg" srcset="/img/loading.gif" alt="sliding-windows"></p>
 <h2 id="Global-Windows"><a href="#Global-Windows" class="headerlink" title="Global Windows"></a>Global Windows</h2><p>Global Windows 全局窗口</p>
 <p>全局窗口分配器将具有相同键的所有元素分配给同一单个全局窗口。 仅当您还指定自定义触发器时，此窗口方案才有用。 否则，将不会执行任何计算，因为全局窗口没有可以处理聚合元素的自然终点。</p>
 <h1 id="窗口函数"><a href="#窗口函数" class="headerlink" title="窗口函数"></a>窗口函数</h1><p>在定义窗口分配器后，我们需要指定每个窗口上执行的计算。一旦系统处于就绪状态，就可以处理每个（可能是键控）窗口中的元素，这是窗口函数的职能所在（请参阅Flink如何确定窗口何时准备就绪的触发器）</p>
@@ -18,36 +268,391 @@
 <p>使用ProcessWindowFunction进行窗口转换不能像其他情况一样有效地执行，因为Flink必须在调用函数之前在内部缓冲窗口的所有元素。可以通过将ProcessWindowFunction与ReduceFunction，AggregateFunction或FoldFunction组合使用来获得窗口元素的增量聚合以及ProcessWindowFunction接收的其他窗口元数据，从而缓解这种情况。代码示例如下。</p>
 <h2 id="ReduceFunction"><a href="#ReduceFunction" class="headerlink" title="ReduceFunction"></a>ReduceFunction</h2><p>一个ReduceFunction函数指定了如何将输入中的两个元素组合，且输出一个相同类型的结果。Flink使用ReduceFunction来增量聚合窗口中的元素。</p>
 <p>一个ReduceFunction函数可以这样来使用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;</span><br><span class="line"></span><br><span class="line">input</span><br><span class="line">    .keyBy(&lt;key selector&gt;)</span><br><span class="line">    .window(&lt;window assigner&gt;)</span><br><span class="line">    .reduce(<span class="keyword">new</span> ReduceFunction&lt;Tuple2&lt;String, Long&gt;&gt; &#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> Tuple2&lt;String, Long&gt; <span class="title">reduce</span><span class="params">(Tuple2&lt;String, Long&gt; v1, Tuple2&lt;String, Long&gt; v2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Tuple2&lt;&gt;(v1.f0, v1.f1 + v2.f1);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java">DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;
+
+input
+    .keyBy(&lt;key selector&gt;)
+    .window(&lt;window assigner&gt;)
+    .reduce(<span class="hljs-keyword">new</span> ReduceFunction&lt;Tuple2&lt;String, Long&gt;&gt; &#123;
+      <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;String, Long&gt; <span class="hljs-title">reduce</span><span class="hljs-params">(Tuple2&lt;String, Long&gt; v1, Tuple2&lt;String, Long&gt; v2)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(v1.f0, v1.f1 + v2.f1);
+      &#125;
+    &#125;);</code></pre>
 
 <p>上面的例子操作是将Tuple第二个位置上的元素相加</p>
 <h2 id="AggregateFunction"><a href="#AggregateFunction" class="headerlink" title="AggregateFunction"></a>AggregateFunction</h2><p>AggregateFunction是ReduceFunction的通用版本，具有三种类型：输入类型（IN），累加器类型（ACC）和输出类型（OUT）。输入类型是输入流中元素的类型，AggregateFunction具有一种将一个输入元素添加到累加器的方法。 该接口还具有创建初始累加器，将两个累加器合并为一个累加器以及从累加器提取输出（OUT类型）的方法。 我们将在下面的示例中看到它的工作原理。</p>
 <p>与ReduceFunction相同，Flink将在窗口的输入元素到达时对其进行增量聚合。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 计算窗口中元素的第二个字段的平均值。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AverageAggregate</span></span></span><br><span class="line"><span class="class">         <span class="keyword">implements</span> <span class="title">AggregateFunction</span>&lt;<span class="title">Tuple2</span>&lt;<span class="title">String</span>, <span class="title">Long</span>&gt;, <span class="title">Tuple2</span>&lt;<span class="title">Long</span>, <span class="title">Long</span>&gt;, <span class="title">Double</span>&gt; </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="title">createAccumulator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Tuple2&lt;&gt;(<span class="number">0L</span>, <span class="number">0L</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="title">add</span><span class="params">(Tuple2&lt;String, Long&gt; value, Tuple2&lt;Long, Long&gt; accumulator)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Tuple2&lt;&gt;(accumulator.f0 + value.f1, accumulator.f1 + <span class="number">1L</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Double <span class="title">getResult</span><span class="params">(Tuple2&lt;Long, Long&gt; accumulator)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((<span class="keyword">double</span>) accumulator.f0) / accumulator.f1;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="title">merge</span><span class="params">(Tuple2&lt;Long, Long&gt; a, Tuple2&lt;Long, Long&gt; b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Tuple2&lt;&gt;(a.f0 + b.f0, a.f1 + b.f1);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;</span><br><span class="line"></span><br><span class="line">input</span><br><span class="line">    .keyBy(&lt;key selector&gt;)</span><br><span class="line">    .window(&lt;window assigner&gt;)</span><br><span class="line">    .aggregate(<span class="keyword">new</span> AverageAggregate());</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 计算窗口中元素的第二个字段的平均值。</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AverageAggregate</span></span>
+<span class="hljs-class">         <span class="hljs-keyword">implements</span> <span class="hljs-title">AggregateFunction</span>&lt;<span class="hljs-title">Tuple2</span>&lt;<span class="hljs-title">String</span>, <span class="hljs-title">Long</span>&gt;, <span class="hljs-title">Tuple2</span>&lt;<span class="hljs-title">Long</span>, <span class="hljs-title">Long</span>&gt;, <span class="hljs-title">Double</span>&gt; </span>&#123;
+  
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="hljs-title">createAccumulator</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(<span class="hljs-number">0L</span>, <span class="hljs-number">0L</span>);
+  &#125;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="hljs-title">add</span><span class="hljs-params">(Tuple2&lt;String, Long&gt; value, Tuple2&lt;Long, Long&gt; accumulator)</span></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(accumulator.f0 + value.f1, accumulator.f1 + <span class="hljs-number">1L</span>);
+  &#125;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> Double <span class="hljs-title">getResult</span><span class="hljs-params">(Tuple2&lt;Long, Long&gt; accumulator)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> ((<span class="hljs-keyword">double</span>) accumulator.f0) / accumulator.f1;
+  &#125;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> Tuple2&lt;Long, Long&gt; <span class="hljs-title">merge</span><span class="hljs-params">(Tuple2&lt;Long, Long&gt; a, Tuple2&lt;Long, Long&gt; b)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuple2&lt;&gt;(a.f0 + b.f0, a.f1 + b.f1);
+  &#125;
+&#125;
+
+DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;
+
+input
+    .keyBy(&lt;key selector&gt;)
+    .window(&lt;window assigner&gt;)
+    .aggregate(<span class="hljs-keyword">new</span> AverageAggregate());</code></pre>
 
 <h2 id="FoldFunction"><a href="#FoldFunction" class="headerlink" title="FoldFunction"></a>FoldFunction</h2><h2 id="ProcessWindowFunction"><a href="#ProcessWindowFunction" class="headerlink" title="ProcessWindowFunction"></a>ProcessWindowFunction</h2><p>ProcessWindowFunction获取一个Iterable，该Iterable包含窗口的所有元素，以及一个Context对象，该对象可以访问时间和状态信息，从而使其比其他窗口函数更具灵活性。 这是以性能和资源消耗为代价的，因为无法增量聚合元素，而是需要在内部对其进行缓冲，直到将窗口视为已准备好进行处理为止。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;</span><br><span class="line"></span><br><span class="line">input</span><br><span class="line">  .keyBy(t -&gt; t.f0)</span><br><span class="line">  .timeWindow(Time.minutes(<span class="number">5</span>))</span><br><span class="line">  .process(<span class="keyword">new</span> MyProcessWindowFunction());</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ... */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProcessWindowFunction</span> </span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">ProcessWindowFunction</span>&lt;<span class="title">Tuple2</span>&lt;<span class="title">String</span>, <span class="title">Long</span>&gt;, <span class="title">String</span>, <span class="title">String</span>, <span class="title">TimeWindow</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(String key, Context context, Iterable&lt;Tuple2&lt;String, Long&gt;&gt; input, Collector&lt;String&gt; out)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Tuple2&lt;String, Long&gt; in: input) &#123;</span><br><span class="line">      count++;</span><br><span class="line">    &#125;</span><br><span class="line">    out.collect(<span class="string">"Window: "</span> + context.window() + <span class="string">"count: "</span> + count);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java">DataStream&lt;Tuple2&lt;String, Long&gt;&gt; input = ...;
+
+input
+  .keyBy(t -&gt; t.f0)
+  .timeWindow(Time.minutes(<span class="hljs-number">5</span>))
+  .process(<span class="hljs-keyword">new</span> MyProcessWindowFunction());
+
+<span class="hljs-comment">/* ... */</span>
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyProcessWindowFunction</span> </span>
+<span class="hljs-class">    <span class="hljs-keyword">extends</span> <span class="hljs-title">ProcessWindowFunction</span>&lt;<span class="hljs-title">Tuple2</span>&lt;<span class="hljs-title">String</span>, <span class="hljs-title">Long</span>&gt;, <span class="hljs-title">String</span>, <span class="hljs-title">String</span>, <span class="hljs-title">TimeWindow</span>&gt; </span>&#123;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">(String key, Context context, Iterable&lt;Tuple2&lt;String, Long&gt;&gt; input, Collector&lt;String&gt; out)</span> </span>&#123;
+    <span class="hljs-keyword">long</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (Tuple2&lt;String, Long&gt; in: input) &#123;
+      count++;
+    &#125;
+    out.collect(<span class="hljs-string">"Window: "</span> + context.window() + <span class="hljs-string">"count: "</span> + count);
+  &#125;
+&#125;</code></pre>
 
 <p>该示例显示了一个ProcessWindowFunction，它对窗口中的元素进行计数。 另外，窗口功能将有关窗口的信息添加到输出中。</p>
 <p>注意请注意，将ProcessWindowFunction用于简单的聚合（如count）效率很低。 下一节说明如何将ReduceFunction或AggregateFunction与ProcessWindowFunction结合使用，以获取增量聚合和ProcessWindowFunction的附加信息。</p>
 <h2 id="ProcessWindowFunction-with-Incremental-Aggregation"><a href="#ProcessWindowFunction-with-Incremental-Aggregation" class="headerlink" title="ProcessWindowFunction with Incremental Aggregation"></a>ProcessWindowFunction with Incremental Aggregation</h2><p>可以将ProcessWindowFunction与ReduceFunction，AggregateFunction或FoldFunction组合以在元素到达窗口时对其进行增量聚合。 当窗口关闭时，将向ProcessWindowFunction提供聚合结果。 这使得它可以递增地计算窗口，同时可以访问ProcessWindowFunction的其他窗口元信息。</p>
 <h4 id="使用ReduceFunction的增量窗口聚合"><a href="#使用ReduceFunction的增量窗口聚合" class="headerlink" title="使用ReduceFunction的增量窗口聚合"></a>使用ReduceFunction的增量窗口聚合</h4><p>以下示例显示了如何将增量ReduceFunction与ProcessWindowFunction结合使用以返回窗口中的最小事件以及该窗口的开始时间。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;SensorReading&gt; input = ...;</span><br><span class="line"></span><br><span class="line">input</span><br><span class="line">  .keyBy(&lt;key selector&gt;)</span><br><span class="line">  .timeWindow(&lt;duration&gt;)</span><br><span class="line">  .reduce(<span class="keyword">new</span> MyReduceFunction(), <span class="keyword">new</span> MyProcessWindowFunction());</span><br><span class="line"></span><br><span class="line"><span class="comment">// Function definitions</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyReduceFunction</span> <span class="keyword">implements</span> <span class="title">ReduceFunction</span>&lt;<span class="title">SensorReading</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> SensorReading <span class="title">reduce</span><span class="params">(SensorReading r1, SensorReading r2)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> r1.value() &gt; r2.value() ? r2 : r1;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProcessWindowFunction</span></span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">ProcessWindowFunction</span>&lt;<span class="title">SensorReading</span>, <span class="title">Tuple2</span>&lt;<span class="title">Long</span>, <span class="title">SensorReading</span>&gt;, <span class="title">String</span>, <span class="title">TimeWindow</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(String key,</span></span></span><br><span class="line"><span class="function"><span class="params">                    Context context,</span></span></span><br><span class="line"><span class="function"><span class="params">                    Iterable&lt;SensorReading&gt; minReadings,</span></span></span><br><span class="line"><span class="function"><span class="params">                    Collector&lt;Tuple2&lt;Long, SensorReading&gt;&gt; out)</span> </span>&#123;</span><br><span class="line">      SensorReading min = minReadings.iterator().next();</span><br><span class="line">      out.collect(<span class="keyword">new</span> Tuple2&lt;Long, SensorReading&gt;(context.window().getStart(), min));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java">DataStream&lt;SensorReading&gt; input = ...;
 
-<h2 id="Using-per-window-state-in-ProcessWindowFunction"><a href="#Using-per-window-state-in-ProcessWindowFunction" class="headerlink" title="Using per-window state in ProcessWindowFunction"></a>Using per-window state in ProcessWindowFunction</h2><h1 id="Triggers"><a href="#Triggers" class="headerlink" title="Triggers"></a>Triggers</h1><h1 id="Evictors"><a href="#Evictors" class="headerlink" title="Evictors"></a>Evictors</h1><h1 id="Allowed-Lateness"><a href="#Allowed-Lateness" class="headerlink" title="Allowed Lateness"></a>Allowed Lateness</h1></div><div class="tags"><a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><i class="fa fa-tag"></i>大数据</a></div><div class="post-nav"><a class="pre" href="/2020/07/06/%E4%B8%89%E6%95%B0%E7%9B%B8%E5%8A%A0/">三数之和</a><a class="next" href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/">ConcurrentHashMap如何实现的</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
-  clientID: '6ac17303e1f9e10122e1',
-  clientSecret: '2b166cb9ead4edaac25dc0f9324b03b27cb16ffd',
-  repo: 'hexo-comments',
-  owner: 'yinxs2003',
-  admin: ['yinxs2003'],
-  id: md5(location.pathname),
-  distractionFreeMode: false
-})
-gitalk.render('container')
-</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">35</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 15px;">大数据</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/JVM/" style="font-size: 15px;">JVM</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/jvm/" style="font-size: 15px;">jvm</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 15px;">面试</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/11/03/Flink%20Connect%E5%92%8CUnion%E5%8C%BA%E5%88%AB/">Flink Connect和Union区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/20/Java8%E7%9A%84Function%E5%92%8CBI_Function/">Java8的Function和BI_Function</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/20/Java%E4%B8%AD%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E4%B8%AD%E7%9A%84%E8%B5%84%E6%BA%90%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95/">Java中如何自动调用父类中的资源初始化方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/20/Centos7%E5%AE%89%E8%A3%85python3/">Centos7安装python3</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/11/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E4%BB%93%E5%BA%93/">如何搭建个人仓库</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/11/%E9%9D%A2%E8%AF%95-kafka%E4%B8%93%E9%A2%98/">面试-Kafka专题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/10/python3_spark%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/">Ambari显示heartbeat_lost问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/10/Ambari%E6%98%BE%E7%A4%BAheartbeat_lost%E9%97%AE%E9%A2%98/">python3下配置spark环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/10/centos7%E8%BF%9E%E6%8E%A5wpa%20enterprise%E4%BC%81%E4%B8%9A%E7%BA%A7wifi/">python3下配置spark环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/07/%E6%97%A0%E9%87%8D%E5%A4%8D%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">无重复最长子串</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div><ul></ul><a href="http://heqiao2010.github.io/" title="HeQiao的博客" target="_blank">HeQiao的博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">工作随笔.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=0.0.0"><script type="text/javascript" src="/js/search.js?v=0.0.0"></script><script>var search_path = 'search.xml';
-if (search_path.length == 0) {
-   search_path = 'search.xml';
-}
-var path = '/' + search_path;
-searchFunc(path, 'local-search-input', 'local-search-result');
-</script><script type="text/javascript" src="/js/copycode.js" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+input
+  .keyBy(&lt;key selector&gt;)
+  .timeWindow(&lt;duration&gt;)
+  .reduce(<span class="hljs-keyword">new</span> MyReduceFunction(), <span class="hljs-keyword">new</span> MyProcessWindowFunction());
+
+<span class="hljs-comment">// Function definitions</span>
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyReduceFunction</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ReduceFunction</span>&lt;<span class="hljs-title">SensorReading</span>&gt; </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> SensorReading <span class="hljs-title">reduce</span><span class="hljs-params">(SensorReading r1, SensorReading r2)</span> </span>&#123;
+      <span class="hljs-keyword">return</span> r1.value() &gt; r2.value() ? r2 : r1;
+  &#125;
+&#125;
+
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyProcessWindowFunction</span></span>
+<span class="hljs-class">    <span class="hljs-keyword">extends</span> <span class="hljs-title">ProcessWindowFunction</span>&lt;<span class="hljs-title">SensorReading</span>, <span class="hljs-title">Tuple2</span>&lt;<span class="hljs-title">Long</span>, <span class="hljs-title">SensorReading</span>&gt;, <span class="hljs-title">String</span>, <span class="hljs-title">TimeWindow</span>&gt; </span>&#123;
+
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">(String key,</span></span>
+<span class="hljs-function"><span class="hljs-params">                    Context context,</span></span>
+<span class="hljs-function"><span class="hljs-params">                    Iterable&lt;SensorReading&gt; minReadings,</span></span>
+<span class="hljs-function"><span class="hljs-params">                    Collector&lt;Tuple2&lt;Long, SensorReading&gt;&gt; out)</span> </span>&#123;
+      SensorReading min = minReadings.iterator().next();
+      out.collect(<span class="hljs-keyword">new</span> Tuple2&lt;Long, SensorReading&gt;(context.window().getStart(), min));
+  &#125;
+&#125;</code></pre>
+
+<h2 id="Using-per-window-state-in-ProcessWindowFunction"><a href="#Using-per-window-state-in-ProcessWindowFunction" class="headerlink" title="Using per-window state in ProcessWindowFunction"></a>Using per-window state in ProcessWindowFunction</h2><h1 id="Triggers"><a href="#Triggers" class="headerlink" title="Triggers"></a>Triggers</h1><h1 id="Evictors"><a href="#Evictors" class="headerlink" title="Evictors"></a>Evictors</h1><h1 id="Allowed-Lateness"><a href="#Allowed-Lateness" class="headerlink" title="Allowed Lateness"></a>Allowed Lateness</h1>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/06/%E4%B8%89%E6%95%B0%E7%9B%B8%E5%8A%A0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">三数之和</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/30/ConcurrentHashMap%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0/">
+                        <span class="hidden-mobile">ConcurrentHashMap如何实现的</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    function loadGitalk() {
+      addScript('https://cdn.staticfile.org/blueimp-md5/2.13.0/js/md5.min.js');
+      addScript('https://cdn.staticfile.org/gitalk/1.6.2/gitalk.min.js', function () {
+        var gitalk = new Gitalk({
+          clientID: '6ac17303e1f9e10122e1',
+          clientSecret: '2b166cb9ead4edaac25dc0f9324b03b27cb16ffd',
+          repo: 'hexo-comments',
+          owner: 'yinxs2003',
+          admin: "yinxs2003",
+          id: md5(location.pathname),
+          language: 'zh-CN',
+          labels: ["Gitalk"],
+          perPage: 10,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        });
+        gitalk.render('gitalk-container');
+      });
+    }
+    waitElementVisible('gitalk-container', loadGitalk);
+  </script>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Flink窗口&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
