@@ -3,7 +3,7 @@
 
 <h2 id="官方定义"><a href="#官方定义" class="headerlink" title="官方定义"></a>官方定义</h2><p>watermark流(水印流)作为数据流的一部分，并带有一个时间戳t，当watermark t声明event time达到了t时刻，表名该数据流中不存在时间戳t`&lt;= t的元素</p>
 <h2 id="对于watermark的理解"><a href="#对于watermark的理解" class="headerlink" title="对于watermark的理解"></a>对于watermark的理解</h2><p>在下文中的例子中，我们有一个带有时间戳的事件流，但是由于某种原因它们并不是按顺序到达的。图中的数字代表事件发生的时间戳。第一个到达的事件发生在时间 4，然后它后面跟着的是发生在更早时间（时间 2）的事件，以此类推：</p>
-<p><img src="/images/warter_mark.png" srcset="/img/loading.gif" alt="warter_mark"></p>
+<p><img src="/images/warter_mark.png" alt="warter_mark"></p>
 <p>注意这是一个按照事件时间处理的例子，这意味着时间戳反映的是事件发生的时间，而不是处理事件的时间。事件时间（Event-Time）处理的强大之处在于，无论是在处理实时的数据还是重新处理历史的数据，基于事件时间创建的流计算应用都能保证结果是一样的。</p>
 <p>现在假设我们正在尝试创建一个流计算排序算子。也就是处理一个乱序到达的事件流，并按照事件时间的顺序输出事件。</p>
 <h3 id="理解1"><a href="#理解1" class="headerlink" title="理解1"></a>理解1</h3><p>数据流中的第一个元素的时间是 4，但是我们不能直接将它作为排序后数据流的第一个元素并输出它。因为数据是乱序到达的，也许有一个更早发生的数据还没有到达。事实上，我们能预见一些这个流的未来，也就是我们的排序算子至少要等到 2 这条数据的到达再输出结果。</p>
@@ -19,8 +19,8 @@
 <h1 id="Flink中的时间"><a href="#Flink中的时间" class="headerlink" title="Flink中的时间"></a>Flink中的时间</h1><h2 id="Event-Time"><a href="#Event-Time" class="headerlink" title="Event Time"></a>Event Time</h2><p>事件时间指事件在设备上的发生时间，该时间通常在消息进入Flink之前发生，且该事件发生的时间戳可以从每条记录单独提取</p>
 <h2 id="Ingestion-Time-摄取时间"><a href="#Ingestion-Time-摄取时间" class="headerlink" title="Ingestion Time(摄取时间)"></a>Ingestion Time(摄取时间)</h2><p>摄取时间指的是消息进入flink的时间</p>
 <h2 id="Processing-Time"><a href="#Processing-Time" class="headerlink" title="Processing Time"></a>Processing Time</h2><p>处理时间指的是执行某个任务时的系统时间，在消息进入flink且被window处理时发生</p>
-<h2 id="三种时间关系示意图"><a href="#三种时间关系示意图" class="headerlink" title="三种时间关系示意图"></a>三种时间关系示意图</h2><p><img src="/images/times_clocks.svg" srcset="/img/loading.gif" alt="times_clocks"></p>
-</div><div class="tags"><a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><i class="fa fa-tag"></i>大数据</a></div><div class="post-nav"><a class="pre" href="/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/">Flink中的并行度</a><a class="next" href="/2020/06/20/arthas/">使用arthas分析presto宕机原因</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+<h2 id="三种时间关系示意图"><a href="#三种时间关系示意图" class="headerlink" title="三种时间关系示意图"></a>三种时间关系示意图</h2><p><img src="/images/times_clocks.svg" alt="times_clocks"></p>
+</div><div class="tags"><a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><i class="fa fa-tag"></i>大数据</a></div><div class="post-nav"><a class="pre" href="/2020/06/26/Flink%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1/">Flink提交任务</a><a class="next" href="/2020/06/25/Flink%E4%B8%AD%E7%9A%84%E5%B9%B6%E8%A1%8C%E5%BA%A6/">Flink中的并行度</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
   clientID: '6ac17303e1f9e10122e1',
   clientSecret: '2b166cb9ead4edaac25dc0f9324b03b27cb16ffd',
   repo: 'hexo-comments',

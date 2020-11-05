@@ -3,10 +3,7 @@
 <p>在源码安装文件中编辑文件Modules/Setup.dist</p>
 <h2 id="安装openssl"><a href="#安装openssl" class="headerlink" title="安装openssl"></a>安装openssl</h2><p>在源码安装文件中编辑文件Modules/Setup.dist</p>
 <p>去掉如下注释</p>
-<pre><code class="hljs python"><span class="hljs-comment">#SSL=/usr/local/ssl</span>
-_ssl _ssl.c \
- -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
- -L$(SSL)/lib -lssl -lcrypto</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#SSL=/usr/local/ssl</span></span><br><span class="line">_ssl _ssl.c \</span><br><span class="line"> -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \</span><br><span class="line"> -L$(SSL)/lib -lssl -lcrypto</span><br></pre></td></tr></table></figure>
 
 <h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><p>mkdir /usr/python3</p>
 <p>cd Python-3.7.3</p>

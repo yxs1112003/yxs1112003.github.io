@@ -2,12 +2,12 @@
 <a id="more"></a>
 
 <p>建表时候指定为ORC格式</p>
-<pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> orc_table_with_null <span class="hljs-keyword">STORED</span> <span class="hljs-keyword">AS</span> ORC <span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> x,nullFROM <span class="hljs-keyword">empty</span>;</code></pre>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> orc_table_with_null <span class="keyword">STORED</span> <span class="keyword">AS</span> ORC <span class="keyword">AS</span> <span class="keyword">SELECT</span> x,nullFROM <span class="keyword">empty</span>;</span><br></pre></td></tr></table></figure>
 
 
 
 <p>Hive命令行调试模式</p>
-<pre><code class="hljs routeros">hive --hiveconf hive.root.<span class="hljs-attribute">logger</span>=DEBUG,console</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --hiveconf hive.root.logger&#x3D;DEBUG,console</span><br></pre></td></tr></table></figure>
 
 </div><div class="tags"><a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><i class="fa fa-tag"></i>大数据</a></div><div class="post-nav"><a class="pre" href="/2020/06/15/inode%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/">inode磁盘清理</a><a class="next" href="/2020/06/15/%E8%AF%B7%E6%B1%82%E8%A2%AB%E6%8F%90%E4%BA%A4%E5%88%B0%E5%B7%B2%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84hiveserver2/">beeline请求被提交到已经删除的hiveserver2节点</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
   clientID: '6ac17303e1f9e10122e1',

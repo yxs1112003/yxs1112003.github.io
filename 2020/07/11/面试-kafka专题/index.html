@@ -28,12 +28,12 @@
 <p>Kafka存在如下概念来保证producer端消息的可靠性</p>
 <h3 id="TOPIC和日志"><a href="#TOPIC和日志" class="headerlink" title="TOPIC和日志"></a>TOPIC和日志</h3><p>TOPIC指的是一个订阅主题，是数据被发布的地方，可以被多个消费者订阅</p>
 <p>对于每个主题，kafka集群都维护了一个分区日志，如下所示</p>
-<p><img src="/images/log_anatomy.png" srcset="/img/loading.gif" alt="log_anatomy"></p>
+<p><img src="/images/log_anatomy.png" alt="log_anatomy"></p>
 <p>每个分区都是有序的，不可变的记录集，并且不断追加到结构化的commit log文件。分区中的每一个记录都会分配一个id号来表示顺序，我们称之为offset，<em>offset</em>用来唯一的标识分区中每一条记录。</p>
 <h3 id="消费者、消费组、消息有序性"><a href="#消费者、消费组、消息有序性" class="headerlink" title="消费者、消费组、消息有序性"></a>消费者、消费组、消息有序性</h3><p>消费者使用一个 <em>消费组</em> 名称来进行标识，发布到topic中的每条记录被分配给订阅消费组中的一个消费者实例.消费者实例可以分布在多个进程中或者多个机器上。</p>
 <p>如果所有的消费者实例在同一消费组中，消息记录会负载平衡到每一个消费者实例.</p>
 <p>如果所有的消费者实例在不同的消费组中，每条消息记录会广播到所有的消费者进程.</p>
-<p><img src="/images/consumer-groups.png" srcset="/img/loading.gif" alt="consumer-groups"></p>
+<p><img src="/images/consumer-groups.png" alt="consumer-groups"></p>
 <p>如图，这个 Kafka 集群有两台 server 的，四个分区(p0-p3)和两个消费者组。消费组A有两个消费者，消费组B有四个消费者。</p>
 <p>通常情况下，每个 topic 都会有一些消费组，一个消费组对应一个”逻辑订阅者”。一个消费组由许多消费者实例组成，便于扩展和容错。这就是发布和订阅的概念，只不过订阅者是一组消费者而不是单个的进程。</p>
 <p>在Kafka中实现消费的方式是将日志中的分区划分到每一个消费者实例上，以便在任何时间，每个实例都是分区唯一的消费者。维护消费组中的消费关系由Kafka协议动态处理。如果新的实例加入组，他们将从组中其他成员处接管一些 partition 分区;如果一个实例消失，拥有的分区将被分发到剩余的实例。</p>
@@ -48,18 +48,10 @@
 <h1 id="Consumer重复消费怎么处理"><a href="#Consumer重复消费怎么处理" class="headerlink" title="Consumer重复消费怎么处理"></a>Consumer重复消费怎么处理</h1><h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>笔者基于java做了一个动态添加topic，并落地数据到Hbase的功能，其他同事在复用消费topic代码做实时统计时，出现重复消费，导致统计结果不准的现象，因为写入数据到Hbase是幂等的，重复消费所以未出现问题，但是重复消费会影响到统计结果</p>
 <h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>使用Kafka时，禁止offset自动提交，消费者每次poll的数据业务处理时间超过kafka的max.poll.interval.ms，默认是300秒，导致kafka的broker认为consumer挂掉，触发kafka进行rebalance动作，导致重新消费</p>
 <h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>一般消费方式如下：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">consumer</span><span class="hljs-selector-class">.subscribe</span>(<span class="hljs-selector-tag">topicName</span>,<span class="hljs-selector-tag">rebalance</span>)
-<span class="hljs-selector-tag">consumer</span><span class="hljs-selector-class">.poll</span>(100)</code></pre>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">consumer</span><span class="selector-class">.subscribe</span>(<span class="selector-tag">topicName</span>,<span class="selector-tag">rebalance</span>)</span><br><span class="line"><span class="selector-tag">consumer</span><span class="selector-class">.poll</span>(100)</span><br></pre></td></tr></table></figure>
 
 <p>上述消费方式都会存在处理消息时长超过max.poll.interval.ms配置值风险，导致rebalance，所以最根本的解决方式，就是避免kafka进行rebalance动作，消费代码可使用如下方式</p>
-<pre><code class="hljs dart"><span class="hljs-keyword">final</span> <span class="hljs-built_in">List</span>&lt;TopicPartition&gt; newPartitionAssignments =
-                <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(newPartitions.size() + oldPartitionAssignmentsToPosition.size());
-newPartitionAssignments.addAll(oldPartitionAssignmentsToPosition.keySet());
-newPartitionAssignments.addAll(convertKafkaPartitions(newPartitions));
-
-<span class="hljs-comment">// reassign with the new partitions</span>
-consumer.assign(newPartitionAssignments);
-consumer.seek(topicPartition, offset)</code></pre>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">List</span>&lt;TopicPartition&gt; newPartitionAssignments =</span><br><span class="line">                <span class="keyword">new</span> ArrayList&lt;&gt;(newPartitions.size() + oldPartitionAssignmentsToPosition.size());</span><br><span class="line">newPartitionAssignments.addAll(oldPartitionAssignmentsToPosition.keySet());</span><br><span class="line">newPartitionAssignments.addAll(convertKafkaPartitions(newPartitions));</span><br><span class="line"></span><br><span class="line"><span class="comment">// reassign with the new partitions</span></span><br><span class="line">consumer.assign(newPartitionAssignments);</span><br><span class="line">consumer.seek(topicPartition, offset)</span><br></pre></td></tr></table></figure>
 
 <p>主要思想是consumer指定消费topic的对应的分区，并从指定offset进行消费，来避免kafka的rebalance动作，引起重复消费，当然这会增加消费逻辑的复杂度，需考虑很多异常情况，如consumer实例下线怎么处理，新增consumer实例，超过topic分区数怎么处理等等，可参照spark structure streaming,flink消费kafka源码实现</p>
 <p>参考<a href="https://www.jianshu.com/p/c358a78bc92c" target="_blank" rel="noopener">https://www.jianshu.com/p/c358a78bc92c</a></p>

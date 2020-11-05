@@ -5,14 +5,14 @@
 <h3 id="Java-堆溢出排查解决思路"><a href="#Java-堆溢出排查解决思路" class="headerlink" title="Java 堆溢出排查解决思路"></a>Java 堆溢出排查解决思路</h3><ol>
 <li>查找关键报错信息，如</li>
 </ol>
-<pre><code class="hljs java">java.lang.OutOfMemoryError: Java heap space</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li>使用内存映像分析工具（如Eclipsc Memory Analyzer或者Jprofiler）对Dump出来的堆储存快照进行分析，分析清楚是内存泄漏还是内存溢出。</li>
 <li>如果是内存泄漏，可进一步通过工具查看泄漏对象到GC    Roots的引用链，修复应用程序中的内存泄漏。</li>
 <li>如果不存在泄漏，先检查代码是否有死循环，递归等，再考虑用 -Xmx 增加堆大小。</li>
 </ol>
-<h2 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a>栈溢出</h2><pre><code class="hljs java">java.lang.OutOfMemoryError: unable to create <span class="hljs-keyword">new</span> <span class="hljs-keyword">native</span> thread</code></pre>
+<h2 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a>栈溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: unable to create <span class="keyword">new</span> <span class="keyword">native</span> thread</span><br></pre></td></tr></table></figure>
 
 
 
@@ -25,7 +25,7 @@
 <li>在单个线程下，栈帧太大，或者虚拟机栈容量太小，当内存无法分配的时候，虚拟机抛出StackOverflowError 异常。</li>
 <li>不断地建立线程的方式会导致内存溢出</li>
 </ul>
-<h2 id="方法区溢出"><a href="#方法区溢出" class="headerlink" title="方法区溢出"></a>方法区溢出</h2><pre><code class="hljs JAVA">java.lang.OutOfMemoryError: Metaspace</code></pre>
+<h2 id="方法区溢出"><a href="#方法区溢出" class="headerlink" title="方法区溢出"></a>方法区溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Metaspace</span><br></pre></td></tr></table></figure>
 
 <p> 方法区，（又叫永久代，JDK8后，元空间替换了永久代），用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。运行时产生大量的类，会填满方法区，造成溢出。 </p>
 <h3 id="方法区溢出原因"><a href="#方法区溢出原因" class="headerlink" title="方法区溢出原因"></a>方法区溢出原因</h3><ul>
@@ -41,7 +41,7 @@
 <li>检查是否使用CGLib生成了大量的代理类</li>
 <li>重启大法，重启JVM</li>
 </ul>
-<h2 id="本机直接内存溢出"><a href="#本机直接内存溢出" class="headerlink" title="本机直接内存溢出"></a>本机直接内存溢出</h2><pre><code class="hljs java">java.lang.OutOfMemoryError: Direct buffer memory</code></pre>
+<h2 id="本机直接内存溢出"><a href="#本机直接内存溢出" class="headerlink" title="本机直接内存溢出"></a>本机直接内存溢出</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Direct buffer memory</span><br></pre></td></tr></table></figure>
 
 <p>直接内存并不是虚拟机运行时数据区的一部分，也不是Java 虚拟机规范中定义的内存区域。但是，这部分内存也被频繁地使用，而且也可能导致OOM。</p>
 <p>在JDK1.4 中新加入了NIO(New Input/Output)类，它可以使用 native 函数库直接分配堆外内存，然后通过一个存储在Java堆中的 DirectByteBuffer 对象作为这块内存的引用进行操作。这样能在一些场景中显著提高性能，因为避免了在 Java 堆和 Native 堆中来回复制数据。</p>
@@ -54,7 +54,7 @@
 <li>检查代码是否恰当</li>
 <li>检查JVM参数-Xmx，-XX:MaxDirectMemorySize 是否合理</li>
 </ul>
-<h2 id="GC-overhead-limit-exceeded"><a href="#GC-overhead-limit-exceeded" class="headerlink" title="GC overhead limit exceeded"></a>GC overhead limit exceeded</h2><pre><code class="hljs JAVA">java.lang.OutOfMemoryError: GC overhead limit exceeded</code></pre>
+<h2 id="GC-overhead-limit-exceeded"><a href="#GC-overhead-limit-exceeded" class="headerlink" title="GC overhead limit exceeded"></a>GC overhead limit exceeded</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: GC overhead limit exceeded</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>这个是JDK6新加的错误类型，一般都是堆太小导致的。</li>
@@ -72,10 +72,10 @@
 <li>某一个资源被频繁申请，系统资源耗尽，例如：不断创建线程，不断发起网络连接；更具体的，可以按照以下步骤，使用以下工具排查。</li>
 </ol>
 <h2 id="确认是不是内存本身就分配过小"><a href="#确认是不是内存本身就分配过小" class="headerlink" title="确认是不是内存本身就分配过小"></a><strong>确认是不是内存本身就分配过小</strong></h2><p> jmap -heap 10765 </p>
-<p> <img src="/images/oom.png" srcset="/img/loading.gif" alt="image"> </p>
+<p> <img src="/images/oom.png" alt="image"> </p>
 <p> 如上图，可以查看新生代，老生代堆内存的分配大小以及使用情况，看是否本身分配过小。 </p>
 <h2 id="找到最耗内存的对象"><a href="#找到最耗内存的对象" class="headerlink" title="找到最耗内存的对象"></a>找到最耗内存的对象</h2><p> jmap -histo:live 10765 | more </p>
-<p> <img src="/images/OOM2.png" srcset="/img/loading.gif" alt="image"> </p>
+<p> <img src="/images/OOM2.png" alt="image"> </p>
 <p> 需要说明的是，jmap -histo:live 会执行一次FGC，如果仍无法定位，可dump内存，通过Java内存分析工具MAT<strong>（Memory Analyzer Tool</strong>）线下进行分析。 </p>
 <p> 上图中占内存最多的对象是RingBufferLogEvent，共占用内存18M，属于正常使用范围。如果发现某类对象占用内存很大（例如几个G），很可能是类对象创建太多，且一直未释放 </p>
 <p>例如：<br>1.申请完资源后，未调用close()或dispose()释放资源；<br>2.消费者消费速度慢（或停止消费了），而生产者不断往队列中投递任务，导致队列中任务累积过多； </p>
@@ -84,11 +84,11 @@
 <li>netstat </li>
 </ol>
 <p>查看进程创建的线程数，以及网络连接数，如果资源耗尽，也可能出现OOM。这里介绍另一种方法，通过/proc/${PID}/fd 和 /proc/${PID}/task </p>
-<p> <img src="/images/oom3.png" srcset="/img/loading.gif" alt="image"> </p>
+<p> <img src="/images/oom3.png" alt="image"> </p>
 <p>如上图，sshd共占用了四个句柄<br>（1）0 -&gt; 标准输入；<br>（2）1 -&gt; 标准输出；<br>（3）2 -&gt; 标准错误输出；<br>（4）3 -&gt; socket（容易想到是监听端口）；</p>
 <p>sshd只有一个主线程PID为9339，并没有多线程。所以，只要</p>
 <p>ll /proc/${PID}/fd | wc -l<br>ll /proc/${PID}/task | wc -l （效果等同pstree -p | wc -l）<br>就能知道进程打开的句柄数和线程数。</p>
-</div><div class="tags"><a href="/tags/jvm/"><i class="fa fa-tag"></i>jvm</a></div><div class="post-nav"><a class="pre" href="/2020/07/07/%E6%97%A0%E9%87%8D%E5%A4%8D%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/">无重复最长子串</a><a class="next" href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/">Spark专项训练</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+</div><div class="tags"><a href="/tags/jvm/"><i class="fa fa-tag"></i>jvm</a></div><div class="post-nav"><a class="pre" href="/2020/07/06/Spark%E6%A6%82%E5%BF%B5/">Spark专项训练</a><a class="next" href="/2020/07/06/%E4%B8%89%E6%95%B0%E7%9B%B8%E5%8A%A0/">三数之和</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
   clientID: '6ac17303e1f9e10122e1',
   clientSecret: '2b166cb9ead4edaac25dc0f9324b03b27cb16ffd',
   repo: 'hexo-comments',
