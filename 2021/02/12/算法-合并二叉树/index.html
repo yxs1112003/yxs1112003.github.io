@@ -4,7 +4,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">walk</span><span class="params">(Node x)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    System.out.println(x.value);</span><br><span class="line">    x.left = walk(x.left);</span><br><span class="line">    x.right = walk(x.right);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><ol>
-<li><p>结束条件：当两个数节点都为空，结束当前递归，即</p>
+<li><p>结束条件：当两个数节点都为空，结束当前递归</p>
 </li>
 <li><p>每层递归做了什么：计算两个val相加（需要判空），根据该值生成新的节点</p>
 </li>
