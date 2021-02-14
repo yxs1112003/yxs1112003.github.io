@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>算法-平衡二叉树</title>
+      <link href="/2021/02/14/%E7%AE%97%E6%B3%95-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+      <url>/2021/02/14/%E7%AE%97%E6%B3%95-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><h4 id="110-平衡二叉树"><a href="#110-平衡二叉树" class="headerlink" title="110. 平衡二叉树"></a><a href="https://leetcode-cn.com/problems/balanced-binary-tree/" target="_blank" rel="noopener">110. 平衡二叉树</a></h4><h4 id="题目概述"><a href="#题目概述" class="headerlink" title="题目概述"></a>题目概述</h4><p><img src="/images/isBalanceTree" alt="isBalanceTree"></p><h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p><strong>左右子树高度差大于1返回false，这个需要递归到每一层</strong></p><ol><li><p>递归结束条件：root为空返回true，左右子树高度差值大于1返回false</p></li><li><p>递归每层做什么：计算左树、右树高度</p></li><li><p>递归返回：高度值</p></li></ol><h2 id="题目解答"><a href="#题目解答" class="headerlink" title="题目解答"></a>题目解答</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isBalanced</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> l = getDepth(root.left);</span><br><span class="line">    <span class="keyword">int</span> r = getDepth(root.right);</span><br><span class="line">    <span class="keyword">if</span> (Math.abs(l - r) &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> isBalanced(root.left) &amp;&amp; isBalanced(root.right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getDepth</span><span class="params">(TreeNode x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Math.max(getDepth(x.left), getDepth(x.right)) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>算法-合并二叉树</title>
       <link href="/2021/02/12/%E7%AE%97%E6%B3%95-%E5%90%88%E5%B9%B6%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
       <url>/2021/02/12/%E7%AE%97%E6%B3%95-%E5%90%88%E5%B9%B6%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
@@ -95,7 +120,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -245,7 +270,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -270,7 +295,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -295,7 +320,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -345,7 +370,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -370,7 +395,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -595,7 +620,7 @@
       
         <tags>
             
-            <tag> jvm </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -639,7 +664,7 @@
       
         <tags>
             
-            <tag> jvm </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -789,7 +814,7 @@
       
         <tags>
             
-            <tag> jvm </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -1014,7 +1039,7 @@
       
         <tags>
             
-            <tag> JVM </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
@@ -1089,7 +1114,7 @@
       
         <tags>
             
-            <tag> Java </tag>
+            <tag> 技术Java </tag>
             
         </tags>
       
