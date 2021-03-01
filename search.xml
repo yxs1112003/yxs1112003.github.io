@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>算法-反转链表</title>
+      <link href="2021/03/01/%E7%AE%97%E6%B3%95-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"/>
+      <url>2021/03/01/%E7%AE%97%E6%B3%95-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
+      
+        <content type="html"><![CDATA[<h2 id="题目概述"><a href="#题目概述" class="headerlink" title="题目概述"></a>题目概述</h2><p><img src="/images/reverseList.png" alt="反转链表"></p><h2 id="题目解答"><a href="#题目解答" class="headerlink" title="题目解答"></a>题目解答</h2><p>迭代解法</p><ol><li>3和4 ：反转节点</li><li>1、2:   后移旧头节点</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ListNode newHead = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">        ListNode tmp = head.next; <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">        head.next = newHead; <span class="comment">// 3</span></span><br><span class="line">        newHead = head;      <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">        head = tmp; <span class="comment">// 2 后移head节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在迭代解法的基础上可以衍生出其递归解法</p><ol><li>结束条件是：当头节点遍历到末尾，且为空时，返回newHead</li><li>1、2步是遍历所有节点操作</li><li>3、4步是将head.next指向前一个节点（newHead），并将newHead后移一位（newHead = head; ）</li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> reverseList(head, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head, ListNode newHead)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> newHead;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ListNode tmp = head.next;          <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">        head.next = newHead;               <span class="comment">// 3</span></span><br><span class="line">        newHead = head;   <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> reverseList(tmp, newHead);  <span class="comment">// 2</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在此基础上可以解决<a href="https://leetcode-cn.com/problems/palindrome-linked-list-lcci/" target="_blank" rel="noopener">面试题 02.06. 回文链表</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>算法-两数、三数之和</title>
       <link href="2021/02/28/%E7%AE%97%E6%B3%95-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%E5%92%8C%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"/>
       <url>2021/02/28/%E7%AE%97%E6%B3%95-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%E5%92%8C%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
