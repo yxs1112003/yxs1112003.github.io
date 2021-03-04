@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>概念-Mysql索引面试题</title>
+      <link href="2021/03/03/%E6%A6%82%E5%BF%B5-Mysql%E7%B4%A2%E5%BC%95%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+      <url>2021/03/03/%E6%A6%82%E5%BF%B5-Mysql%E7%B4%A2%E5%BC%95%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<h2 id="hash索引和B-Tree索引区别"><a href="#hash索引和B-Tree索引区别" class="headerlink" title="hash索引和B+Tree索引区别"></a>hash索引和B+Tree索引区别</h2><ol><li>hash索引只适合等值查询，无法进行范围查询</li><li>存在大量键值重复时候，hash索引效率很低</li><li>hash索引无法利用索引进行排序</li><li>hash索引无法利用联合索引做前缀匹配原则</li></ol><h2 id="B-Tree叶子节点能存储哪些东西"><a href="#B-Tree叶子节点能存储哪些东西" class="headerlink" title="B+Tree叶子节点能存储哪些东西"></a>B+Tree叶子节点能存储哪些东西</h2><p>可以存储整行数据或者是主键索引值，当存储整行数据时候为主键索引，存储主键索引时候是非主键索引。非主键索引在进行查询时候需要先寻找主键索引，根据主键索引获取需要的数据，这个查询两次的过程叫做回表。非主键索引中的联合索引可以通过做前缀原则实现覆盖索引的效果</p><h2 id="创建联合索引的时候，如何选择联合索引的字段顺序"><a href="#创建联合索引的时候，如何选择联合索引的字段顺序" class="headerlink" title="创建联合索引的时候，如何选择联合索引的字段顺序"></a>创建联合索引的时候，如何选择联合索引的字段顺序</h2><p>创建联合索引需要考虑联合索引字段的顺序，where子句中使用最频繁的一列放在最左边。比如我们创建了联合索引idx_k1_k2_k3(key1,key2,key3)三个索引相当于创建了idx(key1,key2,key3) idx(key1,key2) idx(key1)三个索引。</p><h2 id="局部性原理"><a href="#局部性原理" class="headerlink" title="局部性原理"></a>局部性原理</h2><p>平衡二叉树查找效率确实很高，但是频繁的IO才是阻碍提高性能的瓶颈，怎样减少IO次数呢？前辈们很聪明的提出了局部性原理，分为时间局部性原理和空间局部性原理</p><p>时间局部性原理：即假如你查询id为1的用户数据，过一段时间你还会查询id为1的数据，所以会将这部分数据缓存下来。</p><p>空间局部性原理：当你查询id为1的用户数据的时候，你有很大的概率会去查询id为2，3，4的用户的数据，所以会一次性的把id为1，2，3，4的数据都读到内存中去，这个最小的单位就是页。页大小是由linux系统决定的，4k或者8k</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="/2021/03/02/概念-B树和B+树/">B树和B+树</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概念 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>概念-B树和B+树</title>
+      <link href="2021/03/03/%E6%A6%82%E5%BF%B5-B%E6%A0%91%E5%92%8CB+%E6%A0%91/"/>
+      <url>2021/03/03/%E6%A6%82%E5%BF%B5-B%E6%A0%91%E5%92%8CB+%E6%A0%91/</url>
+      
+        <content type="html"><![CDATA[<h2 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h2><p>B树和平衡二叉树稍有不同的是B树属于多叉树又名平衡多路查找树（查找路径不只两个），数据库索引技术里大量使用者B树和B+树的数据结构，让我们来看看他有什么特点</p><ol><li>排序方式：所有节点关键字是按递增次序排列，并遵循左小右大原则；</li><li>子节点数：非叶节点的子节点数&gt;1，且&lt;=M ，且M&gt;=2，空树除外（注：M阶代表一个树节点最多有多少个查找路径，M=M路,当M=2则是2叉树,M=3则是3叉）；</li><li>关键字数：枝节点的关键字数量大于等于ceil(m/2)-1个且小于等于M-1个（注：ceil()是个朝正无穷方向取整的函数 如ceil(1.1)结果为2);</li><li>所有叶子节点均在同一层、叶子节点除了包含了关键字和关键字记录的指针外也有指向其子节点的指针只不过其指针地址都为null对应下图最后一层节点的空格子;</li></ol><p>最后我们用一个图和一个实际的例子来理解B树（这里为了理解方便我就直接用实际字母的大小来排列C&gt;B&gt;A）</p><p><img src="/images/BTree.png" alt="img"></p><h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><p>B+树是B树的一个升级版，相对于B树来说B+树更充分的利用了节点的空间，让查询速度更加稳定，其速度完全接近于二分法查找。为什么说B+树查找的效率要比B树更高、更稳定；我们先看看两者的区别</p><h2 id="B树和B-树区别"><a href="#B树和B-树区别" class="headerlink" title="B树和B+树区别"></a>B树和B+树区别</h2><ol><li>B+树的非叶子节点不保存键值对应的数据，这样使得B+树每个节点所能保存的键值大大增加；</li><li>B+树叶子节点保存了父节点的所有键值和键值对应的数据，每个叶子节点的键值从小到大链接；</li><li>非叶子节点的子节点数=关键字数（来源百度百科）（根据各种资料 这里有两种算法的实现方式，另一种为非叶节点的关键字数=子节点数-1（来源维基百科)，虽然他们数据排列结构不一样，但其原理还是一样的Mysql 的B+树是用第一种方式实现）;</li><li>B+的非叶子节点只进行数据索引，不会存实际的键值对应的数据，所有数据必须要到叶子节点才能获取到，所以每次数据查询的次数都一样；</li></ol><p><img src="/images/B+Tree.png" alt="img"></p><blockquote><h4 id="磁盘IO"><a href="#磁盘IO" class="headerlink" title="磁盘IO"></a>磁盘IO</h4><p>磁盘读取数据靠的是机械运动，每次读取数据花费的时间可以分为寻道时间、旋转延迟、传输时间三个部分，寻道时间指的是磁臂移动到指定磁道所需要的时间，主流磁盘一般在5ms以下；旋转延迟就是我们经常听说的磁盘转速，比如一个磁盘7200转，表示每分钟能转7200次，也就是说1秒钟能转120次，旋转延迟就是1/120/2 = 4.17ms；传输时间指的是从磁盘读出或将数据写入磁盘的时间，一般在零点几毫秒，相对于前两个时间可以忽略不计。那么访问一次磁盘的时间，即一次磁盘IO的时间约等于5+4.17 = 9ms左右，听起来还挺不错的，但要知道一台500 -MIPS的机器每秒可以执行5亿条指令，因为指令依靠的是电的性质，换句话说执行一次IO的时间可以执行40万条指令，数据库动辄十万百万乃至千万级数据，每次9毫秒的时间，显然是个灾难。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 概念 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>算法-回文链表</title>
       <link href="2021/03/02/%E7%AE%97%E6%B3%95-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/"/>
       <url>2021/03/02/%E7%AE%97%E6%B3%95-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/</url>
@@ -29,11 +79,11 @@
     
     
     <entry>
-      <title>算法-Mysql索引面试题</title>
-      <link href="2021/03/02/%E6%A6%82%E5%BF%B5-Mysql%E7%B4%A2%E5%BC%95%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
-      <url>2021/03/02/%E6%A6%82%E5%BF%B5-Mysql%E7%B4%A2%E5%BC%95%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
+      <title>概念-String为什么被设计为不可变的</title>
+      <link href="2021/03/02/%E6%A6%82%E5%BF%B5-String%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E8%AE%BE%E8%AE%A1%E6%88%90%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84/"/>
+      <url>2021/03/02/%E6%A6%82%E5%BF%B5-String%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E8%AE%BE%E8%AE%A1%E6%88%90%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84/</url>
       
-        <content type="html"><![CDATA[<h3 id="索引概念、索引模型"><a href="#索引概念、索引模型" class="headerlink" title="索引概念、索引模型"></a>索引概念、索引模型</h3><h4 id="Q：你能说说什么是索引吗？"><a href="#Q：你能说说什么是索引吗？" class="headerlink" title="Q：你能说说什么是索引吗？"></a><strong>Q：你能说说什么是索引吗？</strong></h4><p>A：索引其实是一种数据结构，能够帮助我们快速的检索数据库中的数据</p><h4 id="Q-那么索引具体采用的哪种数据结构呢？"><a href="#Q-那么索引具体采用的哪种数据结构呢？" class="headerlink" title="Q:那么索引具体采用的哪种数据结构呢？"></a><strong>Q:那么索引具体采用的哪种数据结构呢？</strong></h4><p>A：常见的MySQL主要有两种结构：Hash索引和B+ Tree索引，我们使用的是InnoDB引擎，默认的是B+树</p><h4 id="Q：既然你提到InnoDB使用的B-树的索引模型，那么你知道为什么采用B-树吗？这和Hash索引比较起来有什么优缺点吗？"><a href="#Q：既然你提到InnoDB使用的B-树的索引模型，那么你知道为什么采用B-树吗？这和Hash索引比较起来有什么优缺点吗？" class="headerlink" title="Q：既然你提到InnoDB使用的B+ 树的索引模型，那么你知道为什么采用B+ 树吗？这和Hash索引比较起来有什么优缺点吗？"></a>Q：<strong>既然你提到InnoDB使用的B+ 树的索引模型，那么你知道为什么采用B+ 树吗？这和Hash索引比较起来有什么优缺点吗？</strong></h4><p>A：这道题考的是B+ Tree索引和Hash索引区别？</p><p>哈希索引适合等值查询，但是无法进行范围查询 </p><p>哈希索引没办法利用索引完成排序 </p><p>哈希索引不支持多列联合索引的最左匹配规则 </p><p>如果有大量重复键值的情况下，哈希索引的效率会很低，因为存在哈希碰撞问题</p><h3 id="聚簇索引、非聚簇索引"><a href="#聚簇索引、非聚簇索引" class="headerlink" title="聚簇索引、非聚簇索引"></a>聚簇索引、非聚簇索引</h3><h4 id="Q：刚刚我们聊到B-Tree-，那你知道B-Tree的叶子节点都可以存哪些东西吗？"><a href="#Q：刚刚我们聊到B-Tree-，那你知道B-Tree的叶子节点都可以存哪些东西吗？" class="headerlink" title="Q：刚刚我们聊到B+ Tree ，那你知道B+ Tree的叶子节点都可以存哪些东西吗？"></a>Q：刚刚我们聊到B+ Tree ，那你知道B+ Tree的叶子节点都可以存哪些东西吗？</h4><p>A：InnoDB的B+ Tree可能存储的是整行数据，也有可能是主键的值</p><h4 id="Q：那这两者有什么区别吗？"><a href="#Q：那这两者有什么区别吗？" class="headerlink" title="Q：那这两者有什么区别吗？"></a>Q：那这两者有什么区别吗？</h4><p>A：聚簇索引：索引B+ Tree的叶子节点存储了整行数据的是主键索引，也被称之为聚簇索引。</p><p>而索引B+ Tree的叶子节点存储了主键的值的是非主键索引，也被称之为非聚簇索引</p><h4 id="Q：那么，聚簇索引和非聚簇索引，在查询数据的时候有区别吗？"><a href="#Q：那么，聚簇索引和非聚簇索引，在查询数据的时候有区别吗？" class="headerlink" title="Q：那么，聚簇索引和非聚簇索引，在查询数据的时候有区别吗？"></a>Q：那么，聚簇索引和非聚簇索引，在查询数据的时候有区别吗？</h4><p>A：聚簇索引查询会更快</p><h4 id="Q：为什么呢？"><a href="#Q：为什么呢？" class="headerlink" title="Q：为什么呢？"></a>Q：为什么呢？</h4><p>A：因为主键索引树的叶子节点直接就是我们要查询的整行数据了。而非主键索引的叶子节点是主键的值，查到主键的值以后，还需要再通过主键的值再进行一次查询（回表）</p><h4 id="Q：刚刚你提到主键索引查询只会查一次，而非主键索引需要回表查询多次。（后来我才知道，原来这个过程叫做回表）是所有情况都是这样的吗？非主键索引一定会查询多次吗？"><a href="#Q：刚刚你提到主键索引查询只会查一次，而非主键索引需要回表查询多次。（后来我才知道，原来这个过程叫做回表）是所有情况都是这样的吗？非主键索引一定会查询多次吗？" class="headerlink" title="Q：刚刚你提到主键索引查询只会查一次，而非主键索引需要回表查询多次。（后来我才知道，原来这个过程叫做回表）是所有情况都是这样的吗？非主键索引一定会查询多次吗？"></a>Q：刚刚你提到主键索引查询只会查一次，而非主键索引需要回表查询多次。（后来我才知道，原来这个过程叫做回表）是所有情况都是这样的吗？非主键索引一定会查询多次吗？</h4><p>A：（额、这个问题我回答的不好，后来我自己查资料才知道，通过覆盖索引也可以只查询一次）</p><blockquote><p>覆盖索引（covering index）指一个查询语句的执行只用从索引中就能够取得，不必从数据表中读取。也可以称之为实现了索引覆盖。</p><p>当一条查询语句符合覆盖索引条件时，MySQL只需要通过索引就可以返回查询所需要的数据，这样避免了查到索引后再返回表操作，减少I/O提高效率。</p><p>如，表covering_index_sample中有一个普通索引 idx_key1_key2(key1,key2)。</p><p>当我们通过SQL语句：select key2 from covering_index_sample where key1 = ‘keytest’;的时候，就可以通过覆盖索引查询，无需回表。</p></blockquote><h4 id="Q：如何使用覆盖索引"><a href="#Q：如何使用覆盖索引" class="headerlink" title="Q：如何使用覆盖索引"></a>Q：如何使用覆盖索引</h4><p>之前我们已经建立了表student，那么现在出现的业务需求中要求根据名称获取学生的年龄，并且该搜索场景非常频繁，那么先在我们删除掉之前以字段name建立的普通索引，<strong>以name和age两个字段建立联合索引</strong>，sql命令与建立后的索引树结构如下</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">DROP</span> <span class="keyword">INDEX</span> I_name;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student <span class="keyword">ADD</span> <span class="keyword">INDEX</span> I_name_age(<span class="keyword">name</span>, age);</span><br></pre></td></tr></table></figure><p><img src="/images/combine_index.png" alt="img"></p><p>那在我们再次执行如下sql后</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> age <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'小李'</span>；</span><br></pre></td></tr></table></figure><p>流程为：</p><ol><li>在name,age联合索引树上找到名称为小李的节点</li><li>此时节点索引里包含信息age 直接返回 12</li></ol><h4 id="Q-如何确定数据库成功使用了覆盖索引呢？"><a href="#Q-如何确定数据库成功使用了覆盖索引呢？" class="headerlink" title="Q:如何确定数据库成功使用了覆盖索引呢？"></a>Q:如何确定数据库成功使用了覆盖索引呢？</h4><p>当发起一个索引覆盖查询时，在explain的extra列可以看到using index的信息</p><h3 id="联合索引、最左前缀匹配"><a href="#联合索引、最左前缀匹配" class="headerlink" title="联合索引、最左前缀匹配"></a>联合索引、最左前缀匹配</h3><h4 id="Q：不知道的话没关系，想问一下，你们在创建索引的时候都会考虑哪些因素呢？"><a href="#Q：不知道的话没关系，想问一下，你们在创建索引的时候都会考虑哪些因素呢？" class="headerlink" title="Q：不知道的话没关系，想问一下，你们在创建索引的时候都会考虑哪些因素呢？"></a>Q：不知道的话没关系，想问一下，你们在创建索引的时候都会考虑哪些因素呢？</h4><p>A：我们一般对于查询概率比较高，经常作为where条件的字段设置索引</p><h4 id="Q：-那你们有用过联合索引吗？"><a href="#Q：-那你们有用过联合索引吗？" class="headerlink" title="Q： 那你们有用过联合索引吗？"></a>Q： 那你们有用过联合索引吗？</h4><p>A：用过呀，我们有对一些表中创建过联合索引</p><h4 id="Q：那你们在创建联合索引的时候，需要做联合索引多个字段之间顺序你们是如何选择的呢？"><a href="#Q：那你们在创建联合索引的时候，需要做联合索引多个字段之间顺序你们是如何选择的呢？" class="headerlink" title="Q：那你们在创建联合索引的时候，需要做联合索引多个字段之间顺序你们是如何选择的呢？"></a>Q：那你们在创建联合索引的时候，需要做联合索引多个字段之间顺序你们是如何选择的呢？</h4><p>A：我们把识别度最高的字段放到最前面</p><h4 id="Q：为什么这么做呢？"><a href="#Q：为什么这么做呢？" class="headerlink" title="Q：为什么这么做呢？"></a>Q：为什么这么做呢？</h4><p>A：（这个问题有点把我问蒙了，稍微有些慌乱）这样的话可能命中率会高一点吧。。。</p><h4 id="Q：-那你知道最左前缀匹配吗？"><a href="#Q：-那你知道最左前缀匹配吗？" class="headerlink" title="Q： 那你知道最左前缀匹配吗？"></a>Q： 那你知道最左前缀匹配吗？</h4><p>A：（我突然想起来原来面试官是想问这个，怪自己刚刚为什么就没想到这个呢。）哦哦哦。您刚刚问的是这个意思啊，在创建多列索引时，我们根据业务需求，where子句中使用最频繁的一列放在最左边，因为MySQL索引查询会遵循最左前缀匹配的原则，即最左优先，在检索数据时从联合索引的最左边开始匹配。所以当我们创建一个联合索引的时候，如(key1,key2,key3)，相当于创建了（key1）、(key1,key2)和(key1,key2,key3)三个索引，这就是最左匹配原则</p>]]></content>
+        <content type="html"><![CDATA[<h3 id="不可变的好处"><a href="#不可变的好处" class="headerlink" title="不可变的好处"></a>不可变的好处</h3><p><strong>1. 可以缓存 hash 值</strong></p><p>因为 String 的 hash 值经常被使用，例如 String 用做 HashMap 的 key。不可变的特性可以使得 hash 值也不可变，因此只需要进行一次计算。</p><p><strong>2. String Pool 的需要</strong></p><p>如果一个 String 对象已经被创建过了，那么就会从 String Pool 中取得引用。只有 String 是不可变的，才可能使用 String Pool。</p><p><img src="/images/string_pool.png" alt="img"></p><p><strong>3. 安全性</strong></p><p>String 经常作为参数，String 不可变性可以保证参数不可变。例如在作为网络连接参数的情况下如果 String 是可变的，那么在网络连接过程中，String 被改变，改变 String 的那一方以为现在连接的是其它主机，而实际情况却不一定是。</p><p><strong>4. 线程安全</strong></p><p>String 不可变性天生具备线程安全，可以在多个线程中安全地使用。</p>]]></content>
       
       
       <categories>
