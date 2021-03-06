@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>概念-CMS垃圾回收器 | 工作随笔</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 4.2.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">概念-CMS垃圾回收器</h1><a id="logo" href="/.">工作随笔</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">概念-CMS垃圾回收器</h1><div class="post-meta">2021-03-05<span> | </span><span class="category"><a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">Contents</div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS垃圾回收"><span class="toc-number">1.</span> <span class="toc-text">CMS垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看垃圾收集步骤"><span class="toc-number">2.</span> <span class="toc-text">查看垃圾收集步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol></div></div><div class="post-content"><h3 id="CMS垃圾回收"><a href="#CMS垃圾回收" class="headerlink" title="CMS垃圾回收"></a>CMS垃圾回收</h3><p>CMS垃圾回收收集所有代。它会使用最小的资源来进行大多数垃圾回收工作，通常低停顿并发收集器不会复制或者压缩活动的对象。在不移动活动对象的情况下完成垃圾回收。如果内存碎片导致无法正常分配内存，请分配更大的堆内存。</p>
+<p>CMS在年老带执行垃圾收集会氛围以下几个阶段</p>
+<table>
+<thead>
+<tr>
+<th align="left">Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">(1) Initial Mark <em>(Stop the World Event)</em></td>
+<td>Objects in old generation are “marked” as reachable including those objects which may be reachable from young generation. Pause times are typically short in duration relative to minor collection pause times.</td>
+</tr>
+<tr>
+<td align="left">(2) Concurrent Marking</td>
+<td>Traverse the tenured generation object graph for reachable objects concurrently while Java application threads are executing. Starts scanning from marked objects and transitively marks all objects reachable from the roots. The mutators are executing during the concurrent phases 2, 3, and 5 and any objects allocated in the CMS generation during these phases (including promoted objects) are immediately marked as live.</td>
+</tr>
+<tr>
+<td align="left">(3) Remark <em>(Stop the World Event)</em></td>
+<td>Finds objects that were missed by the concurrent mark phase due to updates by Java application threads to objects after the concurrent collector had finished tracing that object.</td>
+</tr>
+<tr>
+<td align="left">(4) Concurrent Sweep</td>
+<td>Collects the objects identified as unreachable during marking phases. The collection of a dead object adds the space for the object to a free list for later allocation. Coalescing of dead objects may occur at this point. Note that live objects are not moved.</td>
+</tr>
+<tr>
+<td align="left">(5) Resetting</td>
+<td>Prepare for next concurrent collection by clearing data structures.</td>
+</tr>
+</tbody></table>
+<h3 id="查看垃圾收集步骤"><a href="#查看垃圾收集步骤" class="headerlink" title="查看垃圾收集步骤"></a>查看垃圾收集步骤</h3><p>我们来一步一步查看CMS垃圾收集器的动作：</p>
+<ol>
+<li><p>CMS的堆结构</p>
+<p>堆被分成如下三个部分</p>
+<p><img src="/images/jvm-Slide1.png" alt="img"></p>
+<p>年轻代被划分成多个区域，分别是一个Eden区和两个survivor区。</p>
+<p>年老代被划分成一整个连续的区域，年老代垃圾回收通常在原位置进行回收，除非有full GC，否则年老代不进行压缩。</p>
+</li>
+<li><p>CMS在年轻代GC如何工作</p>
+<p><img src="/images/jvm-Slide2.png" alt="img"></p>
+<p>在下图，年轻代是绿色表示，年老代是蓝色表示。如果你的程序已经运行了一段时间，CMS有可能是这样，对象在年老代是散落分布的。</p>
+<p>对于CMS的年老代的内存释放，如果不是FullGC，不会进行内存空间压缩。</p>
+</li>
+<li><p>收集年轻代</p>
+<p>活着的对象从Eden区和survivior区拷贝到另一个survivor区。任何旧对象达到年龄阈值都会被允许进入老年代</p>
+<p><img src="/images/jvm-Slide3.png" alt="jvm-Slide3.png"></p>
+</li>
+<li><p>年轻代收集之后</p>
+<p>年轻代收集之后，Eden区被清理，且两个survivor中的一个被清空</p>
+<p><img src="/images/jvm-Slide4.png" alt="jvm-Slide4.png"></p>
+<p>新提升对象在图中以深蓝色表示。绿色代表是年轻代存活且没有被允许进入老年代的对象</p>
+</li>
+<li><p>CMS收集器的年老代</p>
+<p>两次Stop the world发生在：初始化标记和重新标记。当年老代达到一定占用率，CMS开始收集垃圾。</p>
+<p><img src="/images/jvm-Slide5.png" alt="jvm-Slide5.png"></p>
+<p>（1）可达的对象被标记时候，初始化标记会发生短暂stop-the-world现象、</p>
+<p>（2）并发标记寻找存活的对象并继续执行寻找</p>
+<p>（3）在重新标记阶段，会重新标记在并发标记阶段中没有标记且满足被标记条件的对象</p>
+</li>
+<li><p>年老代收集 - 并发清除</p>
+<p>对象没有再上一个阶段被标记将会被释放，且没有内存区域压缩</p>
+<p><img src="/images/jvm-Slide6.png" alt="jvm-Slide6.png"></p>
+<p>注意：Unmarked objects == Dead Objects</p>
+</li>
+<li><p>年老代收集 - 清除之后</p>
+<p>在（4）清除阶段，你可以看到大量的内存被释放，并且可以看出没有执行压缩内存操作</p>
+<p><img src="/images/jvm-Slide7.png" alt="jvm-Slide7.png"></p>
+</li>
+</ol>
+<p>​        最后CMS收集器将进入（5）重置阶段，并且等待达到下次GC阈值</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="">G1垃圾回收器</a></p>
+</div><div class="tags"><a href="/tags/%E6%A6%82%E5%BF%B5/"><i class="fa fa-tag"></i>概念</a></div><div class="post-nav"><a class="next" href="/2021/03/05/%E6%A6%82%E5%BF%B5-G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A82/">概念-G1垃圾回收器2</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="//unpkg.com/gitalk/dist/gitalk.css?v=0.0.0"><script type="text/javascript" src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js?v=0.0.0"></script><script type="text/javascript" src="//unpkg.com/gitalk/dist/gitalk.min.js?v=0.0.0"></script><script>var gitalk = new Gitalk({
+  clientID: '6ac17303e1f9e10122e1',
+  clientSecret: '2b166cb9ead4edaac25dc0f9324b03b27cb16ffd',
+  repo: 'hexo-comments',
+  owner: 'yinxs2003',
+  admin: ['yinxs2003'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">63</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 15px;">大数据</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 15px;">面试</a> <a href="/tags/%E6%8A%80%E6%9C%AFJava/" style="font-size: 15px;">技术Java</a> <a href="/tags/%E6%A6%82%E5%BF%B5/" style="font-size: 15px;">概念</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/03/05/%E6%A6%82%E5%BF%B5-CMS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/">概念-CMS垃圾回收器</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/05/%E6%A6%82%E5%BF%B5-G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A82/">概念-G1垃圾回收器2</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/05/%E6%A6%82%E5%BF%B5-G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A81/">概念-G1垃圾回收器1</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/03/%E6%A6%82%E5%BF%B5-Mysql%E7%B4%A2%E5%BC%95%E9%9D%A2%E8%AF%95%E9%A2%98/">概念-Mysql索引面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/03/%E6%A6%82%E5%BF%B5-B%E6%A0%91%E5%92%8CB+%E6%A0%91/">概念-B树和B+树</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/03/%E6%A6%82%E5%BF%B5-%E4%B9%A6%E5%86%99%E9%AB%98%E8%B4%A8%E9%87%8FSQL%E7%9A%84%E8%8B%A5%E5%B9%B2%E5%BB%BA%E8%AE%AE/">概念-书写高质量SQL的若干建议</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/02/%E7%AE%97%E6%B3%95-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/">算法-回文链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/02/%E6%A6%82%E5%BF%B5-String%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A2%AB%E8%AE%BE%E8%AE%A1%E6%88%90%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84/">概念-String为什么被设计为不可变的</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/03/01/%E7%AE%97%E6%B3%95-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">算法-反转链表</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/%E7%AE%97%E6%B3%95-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%E5%92%8C%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/">算法-两数、三数之和</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div><ul></ul><a href="http://heqiao2010.github.io/" title="HeQiao的博客" target="_blank">HeQiao的博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2021 <a href="/." rel="nofollow">工作随笔.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=0.0.0"><script type="text/javascript" src="/js/search.js?v=0.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+   search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
